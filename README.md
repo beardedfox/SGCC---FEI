@@ -1,6 +1,6 @@
 SGCC---FEI
 
-                                         ![alt text](https://i.imgur.com/ZxrjOhz.png)
+![alt text](https://i.imgur.com/ZxrjOhz.png)
 
 SISTEMA PARA LA ADMINISTRACIÓN DE HARDWARE Y
 SOFTWARE DEL CENTRO DE CÓMPUTO DE LA FACULTAD DE

@@ -1,5 +1,7 @@
 SGCC---FEI
 
+![alt text](https://i.imgur.com/ZxrjOhz.png)
+
 SISTEMA PARA LA ADMINISTRACIÓN DE HARDWARE Y
 SOFTWARE DEL CENTRO DE CÓMPUTO DE LA FACULTAD DE
 ESTADÍSTICA E INFORMÁTICA
@@ -25,5 +27,4 @@ Licencia:
 Ninguna licencia se ha utilizado en la creación de este software.
 
 Agradecimientos
-A mi, por que he aprendido a estar mucho tiempo pegado a la 
-computadora sin deprimirme. 
+A nadie. 

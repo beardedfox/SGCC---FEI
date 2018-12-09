@@ -1,10 +1,16 @@
 SGCC---FEI
 
-![alt text](https://i.imgur.com/ZxrjOhz.png)
+                                         ![alt text](https://i.imgur.com/ZxrjOhz.png)
 
 SISTEMA PARA LA ADMINISTRACIÓN DE HARDWARE Y
 SOFTWARE DEL CENTRO DE CÓMPUTO DE LA FACULTAD DE
 ESTADÍSTICA E INFORMÁTICA
+
+Implementación de:
+Administrar Usuarios
+Administrar Hardware
+Administrar Responsables
+Asignar Dictamen
 
 Creado con:
 DAO - 

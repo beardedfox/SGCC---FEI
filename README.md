@@ -1,13 +1,15 @@
-SGCC---FEI
+<p align="center">
+  <**# SGCC---FEI**>
+</p># SGCC---FEI
 
 <p align="center">
   <img src="https://i.imgur.com/ZxrjOhz.png">
 </p>
 
 
-SISTEMA PARA LA ADMINISTRACIÓN DE HARDWARE Y
+**SISTEMA PARA LA ADMINISTRACIÓN DE HARDWARE Y
 SOFTWARE DEL CENTRO DE CÓMPUTO DE LA FACULTAD DE
-ESTADÍSTICA E INFORMÁTICA
+ESTADÍSTICA E INFORMÁTICA**
 
 Implementación de:
 Administrar Usuarios
@@ -16,23 +18,23 @@ Administrar Responsables
 Asignar Dictamen
 
 Creado con:
-DAO - 
+**DAO -** 
 Patrón que ofrece la capacidad de programar aplicaciones 
 independientes de cualquier sistema de administración de
 bases de datos (DBMS).
 
-JAVA - 
+**JAVA -**
 Java es un lenguaje de programación de propósito general, 
 concurrente, orientado a objetos, que fue diseñado específicamente
 para tener tan pocas dependencias de implementación como fuera posible.
 
-Versión:
+**Versión:**
 Esperemos que la final.
 
-Autores:
+**Autores:**
 Alberto de Jesús Sánchez López
 
-Licencia:
+**Licencia:**
 Ninguna licencia se ha utilizado en la creación de este software.
 
 Agradecimientos

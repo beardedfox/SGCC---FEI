@@ -1,6 +1,9 @@
 SGCC---FEI
 
-![alt text](https://i.imgur.com/ZxrjOhz.png)
+<p align="center">
+  <img width="460" height="300" src="https://i.imgur.com/ZxrjOhz.png">
+</p>
+
 
 SISTEMA PARA LA ADMINISTRACIÓN DE HARDWARE Y
 SOFTWARE DEL CENTRO DE CÓMPUTO DE LA FACULTAD DE

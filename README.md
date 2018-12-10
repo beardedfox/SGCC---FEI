@@ -1,4 +1,4 @@
-  <center># SGCC---FEI</center>
+  <center> SGCC---FEI</center>
 
 <p align="center">
   <img src="https://i.imgur.com/ZxrjOhz.png">

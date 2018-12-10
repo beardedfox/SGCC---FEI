@@ -1,7 +1,7 @@
 SGCC---FEI
 
 <p align="center">
-  <img width="460" height="300" src="https://i.imgur.com/ZxrjOhz.png">
+  <img src="https://i.imgur.com/ZxrjOhz.png">
 </p>
 
 

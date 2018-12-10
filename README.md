@@ -1,5 +1,5 @@
 <p align="center">
-  <# SGCC---FEI>
+  <SGCC---FEI>
 </p>
 
 <p align="center">
@@ -37,5 +37,5 @@ Alberto de Jesús Sánchez López
 **Licencia:**
 Ninguna licencia se ha utilizado en la creación de este software.
 
-Agradecimientos
+**Agradecimientos**
 A nadie. 

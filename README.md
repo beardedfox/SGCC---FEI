@@ -1,6 +1,6 @@
 <p align="center">
-  <**# SGCC---FEI**>
-</p># SGCC---FEI
+  <# SGCC---FEI>
+</p>
 
 <p align="center">
   <img src="https://i.imgur.com/ZxrjOhz.png">

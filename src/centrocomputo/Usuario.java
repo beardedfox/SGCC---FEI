@@ -9,6 +9,7 @@ public class Usuario {
   private String correoInstitucional;
   private String contrasenia;
   private String rol;
+  private int estado;
   private static final int ESTADOHABILITADO = 1;
   private static final int ESTADODESHABILITADO = 0;
   private String telefonoConExtension;
@@ -28,6 +29,10 @@ public class Usuario {
     this.telefonoConExtension = telefonoConExtension;
   }
 
+  public int getEstado() {
+    return estado;
+  }
+  
   public String getIdentificador() {
     return identificador;
   }
@@ -68,6 +73,14 @@ public class Usuario {
     this.identificador = identificador;
   }
 
+  public void setRol(String rol) {
+    this.rol = rol;
+  }
+
+  public void setEstado(int estado) {
+    this.estado = estado;
+  }
+
   public void setNombres(String nombres) {
     this.nombres = nombres;
   }
@@ -91,4 +104,7 @@ public class Usuario {
   public void setTelefonoConExtension(String telefonoConExtension) {
     this.telefonoConExtension = telefonoConExtension;
   }
+  
+  
+  
 }

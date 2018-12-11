@@ -5,18 +5,25 @@
  */
 package interfazgrafica.administrarhardware;
 
+import centrocomputo.interfaz.*;
+import interfazgrafica.menujefecentrocomputo.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaAdministrarHardware extends javax.swing.JFrame {
-  
+
+  InventarioHardwareInterface inventarioHardware;
+  VentanaMenuJefeCentroComputo ventanaMenu = null;
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaAdministrarHardware
    */
-  public VentanaAdministrarHardware() {
+  public VentanaAdministrarHardware(VentanaMenuJefeCentroComputo ventanaMenu, InventarioHardwareInterface inventarioHardware) {
+    this.inventarioHardware = inventarioHardware;
+    this.ventanaMenu = ventanaMenu;
     initComponents();
   }
 
@@ -53,6 +60,11 @@ public class VentanaAdministrarHardware extends javax.swing.JFrame {
     jPanelMenu.add(jLabelEtiquetaRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, -1, -1));
 
     jLabelRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresarMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
     jLabelEtiquetaAdministrarHardware.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -89,10 +101,16 @@ public class VentanaAdministrarHardware extends javax.swing.JFrame {
     jLabelEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelCerrar.png"))); // NOI18N
     jPanelMenu.add(jLabelEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 60, -1, -1));
 
-    getContentPane().add(jPanelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 390));
+    getContentPane().add(jPanelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 390));
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
+
+  private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaMenu.setVisible(true);
+  }//GEN-LAST:event_jLabelRegresarMouseClicked
 
 
   // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -50,12 +50,12 @@
                       <Component id="jLabelTituloVentana" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="40" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jButtonAdministrarResponsables" min="-2" pref="218" max="-2" attributes="0"/>
-                      <Component id="jButtonAdministrarUsuarios" min="-2" pref="218" max="-2" attributes="0"/>
-                      <Component id="jButtonAdministrarHardware" min="-2" pref="218" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jButtonAdministrarHardware" alignment="1" min="-2" pref="248" max="-2" attributes="0"/>
+                      <Component id="jButtonAdministrarUsuarios" alignment="1" min="-2" pref="248" max="-2" attributes="0"/>
+                      <Component id="jButtonAdministrarResponsables" alignment="1" min="-2" pref="248" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -100,7 +100,7 @@
             <Property name="text" type="java.lang.String" value="Administrar Hardware"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAdministrarHardwareActionPerformed"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonAdministrarHardwareMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonAdministrarUsuarios">
@@ -108,10 +108,10 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="18" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Administrar Usuarios"/>
+            <Property name="text" type="java.lang.String" value="Administrar Usuarios (TA)"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAdministrarUsuariosActionPerformed"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonAdministrarUsuariosMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonAdministrarResponsables">
@@ -122,7 +122,7 @@
             <Property name="text" type="java.lang.String" value="Administrar Responsables"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAdministrarResponsablesActionPerformed"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonAdministrarResponsablesMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelLogoCc">

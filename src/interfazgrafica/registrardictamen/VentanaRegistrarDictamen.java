@@ -5,18 +5,26 @@
  */
 package interfazgrafica.registrardictamen;
 
+import centrocomputo.interfaz.*;
+import interfazgrafica.menujefecentrocomputo.*;
+import interfazgrafica.menutecnicoacademico.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaRegistrarDictamen extends javax.swing.JFrame {
-  
+
+  InventarioUsuarioInterface inventarioUsuario;
+  VentanaMenuTecnicoAcademico ventanaMenu = null;
   String rolNecesario = "TA";
 
   /**
    * Creates new form VentanaRegistrarDictamen
    */
-  public VentanaRegistrarDictamen() {
+  public VentanaRegistrarDictamen(VentanaMenuTecnicoAcademico ventanaMenu, InventarioUsuarioInterface inventarioUsuario) {
+    this.inventarioUsuario = inventarioUsuario;
+    this.ventanaMenu = ventanaMenu;
     initComponents();
   }
 
@@ -81,6 +89,11 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
     jLabelEtiquetaRegresar1.setText("Regresar");
 
     jLabelRegresar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar1.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresar1MouseClicked(evt);
+      }
+    });
 
     jLabelLogoCc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelLogoPequeñoCc.png"))); // NOI18N
 
@@ -138,20 +151,9 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
 
     jLabelMarca.setText("Marca:");
 
-    jTextFieldMarca.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jTextFieldMarcaActionPerformed(evt);
-      }
-    });
-
     jComboBoxPartesDispositivo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
     jComboBoxEstadoDispositivo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-    jComboBoxEstadoDispositivo.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jComboBoxEstadoDispositivoActionPerformed(evt);
-      }
-    });
 
     jComboBoxTipoBorrado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -385,13 +387,11 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  private void jTextFieldMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMarcaActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jTextFieldMarcaActionPerformed
-
-  private void jComboBoxEstadoDispositivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxEstadoDispositivoActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jComboBoxEstadoDispositivoActionPerformed
+  private void jLabelRegresar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresar1MouseClicked
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaMenu.setVisible(true);
+  }//GEN-LAST:event_jLabelRegresar1MouseClicked
 
 
   // Variables declaration - do not modify//GEN-BEGIN:variables

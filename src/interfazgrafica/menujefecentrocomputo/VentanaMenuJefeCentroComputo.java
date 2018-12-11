@@ -5,18 +5,28 @@
  */
 package interfazgrafica.menujefecentrocomputo;
 
+import centrocomputo.interfaz.*;
+import interfazgrafica.administrarhardware.*;
+import interfazgrafica.administrarresponsables.*;
+import interfazgrafica.administrarusuarios.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaMenuJefeCentroComputo extends javax.swing.JFrame {
   
+  private static VentanaMenuJefeCentroComputo ventanaMenuJcc = null;
+  InventarioUsuarioInterface inventarioUsuario;
+  InventarioHardwareInterface inventarioHardware;
+  InventarioResponsableInterface inventarioResponsable;
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaMenuJefeCentroComputo
    */
-  public VentanaMenuJefeCentroComputo() {
+
+  public VentanaMenuJefeCentroComputo(InventarioUsuarioInterface inventarioUsuario) {
     initComponents();
   }
 
@@ -46,25 +56,25 @@ public class VentanaMenuJefeCentroComputo extends javax.swing.JFrame {
 
     jButtonAdministrarHardware.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
     jButtonAdministrarHardware.setText("Administrar Hardware");
-    jButtonAdministrarHardware.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButtonAdministrarHardwareActionPerformed(evt);
+    jButtonAdministrarHardware.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jButtonAdministrarHardwareMouseClicked(evt);
       }
     });
 
     jButtonAdministrarUsuarios.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-    jButtonAdministrarUsuarios.setText("Administrar Usuarios");
-    jButtonAdministrarUsuarios.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButtonAdministrarUsuariosActionPerformed(evt);
+    jButtonAdministrarUsuarios.setText("Administrar Usuarios (TA)");
+    jButtonAdministrarUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jButtonAdministrarUsuariosMouseClicked(evt);
       }
     });
 
     jButtonAdministrarResponsables.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
     jButtonAdministrarResponsables.setText("Administrar Responsables");
-    jButtonAdministrarResponsables.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButtonAdministrarResponsablesActionPerformed(evt);
+    jButtonAdministrarResponsables.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jButtonAdministrarResponsablesMouseClicked(evt);
       }
     });
 
@@ -80,11 +90,11 @@ public class VentanaMenuJefeCentroComputo extends javax.swing.JFrame {
           .addComponent(jLabelLogoCc)
           .addComponent(jLabelTituloVentana))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-        .addGroup(jPanelMenuJefeCentroComputoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-          .addComponent(jButtonAdministrarResponsables, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(jButtonAdministrarUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(jButtonAdministrarHardware, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGap(70, 70, 70))
+        .addGroup(jPanelMenuJefeCentroComputoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jButtonAdministrarHardware, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jButtonAdministrarUsuarios, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jButtonAdministrarResponsables, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(40, 40, 40))
     );
     jPanelMenuJefeCentroComputoLayout.setVerticalGroup(
       jPanelMenuJefeCentroComputoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,60 +129,42 @@ public class VentanaMenuJefeCentroComputo extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  private void jButtonAdministrarHardwareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdministrarHardwareActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jButtonAdministrarHardwareActionPerformed
+  private void jButtonAdministrarUsuariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAdministrarUsuariosMouseClicked
+    despliegaVentanaAdministrarUsuarios();
+  }//GEN-LAST:event_jButtonAdministrarUsuariosMouseClicked
 
-  private void jButtonAdministrarUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdministrarUsuariosActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jButtonAdministrarUsuariosActionPerformed
+  private void jButtonAdministrarHardwareMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAdministrarHardwareMouseClicked
+    despliegaVentanaAdministrarHardware();
+  }//GEN-LAST:event_jButtonAdministrarHardwareMouseClicked
 
-  private void jButtonAdministrarResponsablesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAdministrarResponsablesActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jButtonAdministrarResponsablesActionPerformed
+  private void jButtonAdministrarResponsablesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAdministrarResponsablesMouseClicked
+    despliegaVentanaAdministrarResponsables();
+  }//GEN-LAST:event_jButtonAdministrarResponsablesMouseClicked
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /*
-     * Set the Nimbus look and feel
-     */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /*
-     * If Nimbus (introduced in Java SE 6) is not available, stay with the
-     * default look and feel.
-     * For details see
-     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(VentanaMenuJefeCentroComputo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(VentanaMenuJefeCentroComputo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(VentanaMenuJefeCentroComputo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(VentanaMenuJefeCentroComputo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
-
-    /*
-     * Create and display the form
-     */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new VentanaMenuJefeCentroComputo().setVisible(true);
-      }
-    });
+  private void despliegaVentanaAdministrarUsuarios(){
+    VentanaAdministrarUsuarios ventanaUsuarios 
+            = new VentanaAdministrarUsuarios(this, inventarioUsuario);
+    ventanaUsuarios.setLocationRelativeTo(null);
+    ventanaUsuarios.setVisible(true);
+    this.setVisible(false);
   }
-
+  
+  private void despliegaVentanaAdministrarHardware(){
+    VentanaAdministrarHardware ventanaHardware 
+            = new VentanaAdministrarHardware(this, inventarioHardware);
+    ventanaHardware.setLocationRelativeTo(null);
+    ventanaHardware.setVisible(true);
+    this.setVisible(false);
+  }
+  
+  private void despliegaVentanaAdministrarResponsables(){
+    VentanaAdministrarResponsables ventanaResponsables 
+            = new VentanaAdministrarResponsables(this, inventarioResponsable);
+    ventanaResponsables.setLocationRelativeTo(null);
+    ventanaResponsables.setVisible(true);
+    this.setVisible(false);
+  }
+  
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton jButtonAdministrarHardware;
   private javax.swing.JButton jButtonAdministrarResponsables;

@@ -163,14 +163,14 @@ public class VentanaIniciarSesion extends javax.swing.JFrame {
     switch (rol) {
     
     case "JCC":
-      VentanaMenuJefeCentroComputo menuJcc = new VentanaMenuJefeCentroComputo();
+      VentanaMenuJefeCentroComputo menuJcc = new VentanaMenuJefeCentroComputo(inventarioUsuario);
       this.dispose();
       menuJcc.setLocationRelativeTo(null);
       menuJcc.setVisible(true);
       break;
       
     case "TA":
-      VentanaMenuTecnicoAcademico menuTa = new VentanaMenuTecnicoAcademico();
+      VentanaMenuTecnicoAcademico menuTa = new VentanaMenuTecnicoAcademico(inventarioUsuario);
       this.dispose();
       menuTa.setLocationRelativeTo(null);
       menuTa.setVisible(true);

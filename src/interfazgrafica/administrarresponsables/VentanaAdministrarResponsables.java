@@ -5,18 +5,25 @@
  */
 package interfazgrafica.administrarresponsables;
 
+import centrocomputo.interfaz.*;
+import interfazgrafica.menujefecentrocomputo.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaAdministrarResponsables extends javax.swing.JFrame {
-  
+
+  InventarioResponsableInterface inventarioResponsable;
+  VentanaMenuJefeCentroComputo ventanaMenu = null;
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaAdministrarResponsables
    */
-  public VentanaAdministrarResponsables() {
+  public VentanaAdministrarResponsables(VentanaMenuJefeCentroComputo ventanaMenu, InventarioResponsableInterface inventarioResponsable) {
+    this.inventarioResponsable = inventarioResponsable;
+    this.ventanaMenu = ventanaMenu;
     initComponents();
   }
 
@@ -49,6 +56,11 @@ public class VentanaAdministrarResponsables extends javax.swing.JFrame {
     jPanelMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
     jLabelRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresarMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelRegresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
     jLabelEtiquetaRegresar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -93,6 +105,12 @@ public class VentanaAdministrarResponsables extends javax.swing.JFrame {
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
+
+  private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaMenu.setVisible(true);
+  }//GEN-LAST:event_jLabelRegresarMouseClicked
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JLabel jLabelAñadir;

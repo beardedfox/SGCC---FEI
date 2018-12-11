@@ -5,10 +5,12 @@
  */
 package interfazgrafica.iniciarsesion;
 
-
 import CentroComputo.Usuario;
 import centrocomputo.interfaz.InventarioUsuarioInterface;
-
+import herramientas.*;
+import interfazgrafica.menujefecentrocomputo.*;
+import interfazgrafica.menutecnicoacademico.*;
+import javax.swing.*;
 
 /**
  *
@@ -16,19 +18,21 @@ import centrocomputo.interfaz.InventarioUsuarioInterface;
  */
 public class VentanaIniciarSesion extends javax.swing.JFrame {
   
-  
-   private static VentanaIniciarSesion ventanaIniciarSesion = null;
-   InventarioUsuarioInterface inventarioUsuario;
+  Contraseña evualuador = new Contraseña();
+  Usuario usuarioNuevo = new Usuario();
+  private String usuario = "";
+  private String contraseña = "";
+  private static VentanaIniciarSesion ventanaIniciarSesion = null;
+  InventarioUsuarioInterface inventarioUsuario;
 
   /**
    * Creates new form VentanaIniciarSesion
    */
   
-  public VentanaIniciarSesion(InventarioUsuarioInterface inventarioUsuario){
+  public VentanaIniciarSesion(InventarioUsuarioInterface inventarioUsuario) {
     this.inventarioUsuario = inventarioUsuario;
     this.ventanaIniciarSesion = ventanaIniciarSesion;
     initComponents();
-    agregarCoso();
   }
 
   /**
@@ -47,7 +51,7 @@ public class VentanaIniciarSesion extends javax.swing.JFrame {
     jLabelContrasenia = new javax.swing.JLabel();
     jTextFieldUsuario = new javax.swing.JTextField();
     jButtonIngresar = new javax.swing.JButton();
-    jPasswordField2 = new javax.swing.JPasswordField();
+    jPasswordField = new javax.swing.JPasswordField();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setIconImage(getIconImage());
@@ -66,8 +70,11 @@ public class VentanaIniciarSesion extends javax.swing.JFrame {
 
     jButtonIngresar.setText("Ingresar");
     jButtonIngresar.setBorder(null);
-
-    jPasswordField2.setText("asdasdddddddddddddddddddsadad");
+    jButtonIngresar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jButtonIngresarMouseClicked(evt);
+      }
+    });
 
     javax.swing.GroupLayout jPanelIniciarSesionLayout = new javax.swing.GroupLayout(jPanelIniciarSesion);
     jPanelIniciarSesion.setLayout(jPanelIniciarSesionLayout);
@@ -90,8 +97,8 @@ public class VentanaIniciarSesion extends javax.swing.JFrame {
             .addGap(253, 253, 253))
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelIniciarSesionLayout.createSequentialGroup()
             .addGroup(jPanelIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-              .addComponent(jTextFieldUsuario)
-              .addComponent(jPasswordField2))
+              .addComponent(jPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+              .addComponent(jTextFieldUsuario))
             .addGap(195, 195, 195))))
     );
     jPanelIniciarSesionLayout.setVerticalGroup(
@@ -105,7 +112,7 @@ public class VentanaIniciarSesion extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(jLabelContrasenia)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jPasswordField2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(19, 19, 19)
         .addComponent(jButtonIngresar, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
         .addContainerGap())
@@ -125,26 +132,66 @@ public class VentanaIniciarSesion extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  public void agregarCoso(){
-    
-    Usuario man = new Usuario();
-    man.setIdentificador("2313123");
-    man.setNombres("Miguel Andrés");
-    man.setApellido("Reyes Dominguez");
-    man.setCorreoInstitucional("miguel@gmail.com");
-    man.setContrasenia("zx123321xz");
-    man.setRolTecnicoAcademico();
-    man.setTelefonoConExtension("2282837485");
-    this.inventarioUsuario.guardaUsuario(man);
-  }
+  private void jButtonIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonIngresarMouseClicked
+    iniciarSesion();
+  }//GEN-LAST:event_jButtonIngresarMouseClicked
 
+  private void iniciarSesion() {
+    usuario = jTextFieldUsuario.getText();
+    contraseña = String.valueOf(jPasswordField.getPassword());
+    if (this.inventarioUsuario.validaCredenciales(usuario, contraseña) == true ) {
+      usuarioNuevo = this.inventarioUsuario.buscaUsuario(usuario);
+      this.tipoVentanaPorDesplegar(usuarioNuevo.getRol());
+    } else {
+      despliegaError();
+      limpiarTextBox();
+    }
+  }
+  
+  private void limpiarTextBox(){
+    jTextFieldUsuario.setText("");
+    jPasswordField.setText("");
+  }
+  
+   private void despliegaError() {
+    JOptionPane.showMessageDialog(VentanaIniciarSesion.this, "Datos incorrectos, "
+              + " intente de nuevo",
+              "Información", JOptionPane.INFORMATION_MESSAGE);
+  }
+  
+  private void tipoVentanaPorDesplegar(String rol) {
+    switch (rol) {
+    
+    case "JCC":
+      VentanaMenuJefeCentroComputo menuJcc = new VentanaMenuJefeCentroComputo();
+      this.dispose();
+      menuJcc.setLocationRelativeTo(null);
+      menuJcc.setVisible(true);
+      break;
+      
+    case "TA":
+      VentanaMenuTecnicoAcademico menuTa = new VentanaMenuTecnicoAcademico();
+      this.dispose();
+      menuTa.setLocationRelativeTo(null);
+      menuTa.setVisible(true);
+      break;
+
+    default:
+      JOptionPane.showMessageDialog(VentanaIniciarSesion.this, "Datos de inicio de sesión válidos"
+              + " Reinicie el sistema",
+              "Información", JOptionPane.INFORMATION_MESSAGE);
+      break;
+    }
+  }
+  
+ 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton jButtonIngresar;
   private javax.swing.JLabel jLabelContrasenia;
   private javax.swing.JLabel jLabelLogoCc;
   private javax.swing.JLabel jLabelNombreUsuario;
   private javax.swing.JPanel jPanelIniciarSesion;
-  private javax.swing.JPasswordField jPasswordField2;
+  private javax.swing.JPasswordField jPasswordField;
   private javax.swing.JTextField jTextFieldUsuario;
   // End of variables declaration//GEN-END:variables
 }

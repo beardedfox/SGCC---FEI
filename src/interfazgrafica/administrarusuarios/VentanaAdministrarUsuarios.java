@@ -11,6 +11,8 @@ package interfazgrafica.administrarusuarios;
  * @author Alberto Sánchez
  */
 public class VentanaAdministrarUsuarios extends javax.swing.JFrame {
+  
+    String rolNecesario = "JCC";
 
     /** Creates new form VentanaAdministrarUsuarios */
     public VentanaAdministrarUsuarios() {

@@ -24,6 +24,6 @@ public interface InventarioUsuarioInterface {
   
   public boolean actualizaUsuaraio(Usuario usuario);
   
-  public Usuario buscaUsuaraio(String idUsuario);
+  public Usuario buscaUsuario(String idUsuario);
   
 }

@@ -62,19 +62,11 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="jLabelVisualizarTipo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="113" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="jLabelVisualizarTipo" alignment="1" min="-2" max="-2" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jLabelVisualizarAdquisicion" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelVisualizarResponsable" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="jLabelVisualizarMarca" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelVisualizarEntrada" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -83,19 +75,15 @@
                   </Group>
                   <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
-                                  <Component id="jLabelPartes" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="jLabelUbicacion" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
-                                  <Component id="jLabelEstado" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="jLabelUbicacion" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jLabelPartes" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelEstado" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
@@ -106,6 +94,7 @@
                           <Component id="jLabelModelo" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabelVisualizarUbicacion" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabelVisualizarEstado" min="-2" max="-2" attributes="0"/>
@@ -176,12 +165,9 @@
                   </Group>
                   <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabelPartes" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
-                              <Component id="jLabelVisualizarPartes" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="-6" max="32767" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="jLabelPartes" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="jLabelVisualizarPartes" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="jLabelFecha" alignment="3" max="32767" attributes="0"/>

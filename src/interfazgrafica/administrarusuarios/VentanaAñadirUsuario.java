@@ -11,6 +11,8 @@ package interfazgrafica.administrarusuarios;
  */
 public class VentanaAñadirUsuario extends javax.swing.JFrame {
 
+  String rolNecesario = "JCC";
+  
   /**
    * Creates new form VentanaAñadirUsuario
    */
@@ -63,19 +65,8 @@ public class VentanaAñadirUsuario extends javax.swing.JFrame {
 
     jLabelCorreo.setText("Correo:");
 
-    jTextFieldNumeroPersonal.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jTextFieldNumeroPersonalActionPerformed(evt);
-      }
-    });
-
     jButtonGuardar.setText("Guardar");
     jButtonGuardar.setBorder(null);
-    jButtonGuardar.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButtonGuardarActionPerformed(evt);
-      }
-    });
 
     jLabelEtiquetaRegresar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
     jLabelEtiquetaRegresar.setText("Regresar");
@@ -168,14 +159,6 @@ public class VentanaAñadirUsuario extends javax.swing.JFrame {
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
-
-  private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jButtonGuardarActionPerformed
-
-  private void jTextFieldNumeroPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNumeroPersonalActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jTextFieldNumeroPersonalActionPerformed
 
 
   // Variables declaration - do not modify//GEN-BEGIN:variables

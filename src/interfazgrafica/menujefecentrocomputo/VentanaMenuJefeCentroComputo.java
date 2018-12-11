@@ -10,6 +10,8 @@ package interfazgrafica.menujefecentrocomputo;
  * @author Alberto Sánchez
  */
 public class VentanaMenuJefeCentroComputo extends javax.swing.JFrame {
+  
+  String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaMenuJefeCentroComputo

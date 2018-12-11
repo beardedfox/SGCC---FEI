@@ -16,6 +16,8 @@ public interface AccesoDatosUsuarioInterface {
   
   public boolean validaCredencialesRepositorio (String usuario, String contrasenia);
   
+  public String recuperaContraseñaRepositorio (String usuario);
+  
   public boolean guardaUsuarioRepositorio (Usuario usuario);
   
   public List<Usuario> regresaListaUsuarioRepositorio ();

@@ -54,8 +54,9 @@ public class Usuario {
   }
 
   public String getRol() {
-    return ROLTECNICOACADEMICO;
+    return rol;
   }
+  
 
   public int getEstadoHabilitado() {
     return ESTADOHABILITADO;

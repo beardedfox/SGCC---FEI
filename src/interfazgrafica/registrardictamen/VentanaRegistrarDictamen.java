@@ -10,6 +10,8 @@ package interfazgrafica.registrardictamen;
  * @author Alberto Sánchez
  */
 public class VentanaRegistrarDictamen extends javax.swing.JFrame {
+  
+  String rolNecesario = "TA";
 
   /**
    * Creates new form VentanaRegistrarDictamen

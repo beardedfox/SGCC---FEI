@@ -5,7 +5,9 @@
  */
 package herramientas;
 
+import java.util.logging.*;
 import org.mindrot.jbcrypt.BCrypt;
+import repositorio.dataaccesobject.*;
 
 /**
  *
@@ -20,10 +22,11 @@ public class Contraseña {
     return contraseñaHasheada;
   }
   
-  public boolean evaluaSiExiste(String contraseñaCandidata, String contraseñaHasheada){
+  public boolean evaluaSiExiste(String contraseñaCandidata, String contraseñaHasheada) {
     if (BCrypt.checkpw(contraseñaCandidata, contraseñaHasheada) == true) {
       return true;
+    } else {
+      return false;
     }
-    return false;
   }
 }

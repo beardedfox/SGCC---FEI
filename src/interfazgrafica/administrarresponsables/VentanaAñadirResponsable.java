@@ -10,6 +10,8 @@ package interfazgrafica.administrarresponsables;
  * @author Alberto Sánchez
  */
 public class VentanaAñadirResponsable extends javax.swing.JFrame {
+  
+  String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaAñadirResponsable

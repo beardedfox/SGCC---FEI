@@ -37,8 +37,13 @@ public class InventarioUsuario implements InventarioUsuarioInterface{
   }
 
   @Override
-  public Usuario buscaUsuaraio(String idUsuario) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public Usuario buscaUsuario(String idUsuario) {
+    Usuario usuarioEncontrado = this.repositorioUsuario.buscaUsuaraioRepositorio(idUsuario);
+    if (usuarioEncontrado == null) {
+      return null;
+    } else {
+      return usuarioEncontrado;
+    }
   }
 
   @Override
@@ -61,7 +66,10 @@ public class InventarioUsuario implements InventarioUsuarioInterface{
 
   @Override
   public boolean validaCredenciales(String usuario, String contrasenia) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    if  (this.repositorioUsuario.validaCredencialesRepositorio(usuario, contrasenia) == true ){
+      return true;
+    }
+    return false;
   }
   
 }

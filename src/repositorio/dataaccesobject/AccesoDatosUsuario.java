@@ -21,7 +21,9 @@ import repositorio.interfaz.AccesoDatosUsuarioInterface;
  */
 public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
   
+   Contraseña evualuador = new Contraseña();
    private String consultaSql;
+   private String contraseñaRecuperada;
    private List<Usuario> listaUsuarios;
 
   @Override
@@ -173,22 +175,49 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
   }
 
   @Override
-  public boolean validaCredencialesRepositorio(String usuario) {
-    String contrasenia = "";
+  public String recuperaContraseñaRepositorio(String usuario) {
+    if (usuario == null || usuario.isEmpty()){
+      return null;
+    }
+    contraseñaRecuperada = "";
     consultaSql = "SELECT contraseña FROM usuario WHERE idnumeropersonal = (?)";
     try (PreparedStatement consultaParametrizada = Conexion.obtieneConexionepositorio()
-            .prepareStatement(consultaSql)){
+            .prepareStatement(consultaSql)) {
       consultaParametrizada.setString(1, usuario);
       ResultSet resultSet = consultaParametrizada.executeQuery();
-      if (resultSet.next()){
-        contrasenia = resultSet.getNString(1);
+      if (resultSet.next()) {
+        contraseñaRecuperada = resultSet.getNString(1);
       }
-    } catch (SQLException exception) {
+    } catch (SQLException | StringIndexOutOfBoundsException exception) {
+      exception.printStackTrace();
       Logger.getLogger(AccesoDatosUsuario.class.getName()).log(Level.SEVERE, null, exception);
+      return null;
     } finally {
       Conexion.cierraConexionRepositorio();
     }
-    return false;
+   if (contraseñaRecuperada == null || contraseñaRecuperada.isEmpty()) {
+      return null;
+    } 
+    return contraseñaRecuperada;
+  }
+
+  @Override
+  public boolean validaCredencialesRepositorio(String usuario, String contraseñaEntrada) {
+    if (usuario == null || usuario.isEmpty()) {
+      return false;
+    }
+    if (contraseñaEntrada == null || contraseñaEntrada.isEmpty()) {
+      return false;
+    } 
+    contraseñaRecuperada = this.recuperaContraseñaRepositorio(usuario);
+    if (contraseñaRecuperada == null || contraseñaRecuperada.isEmpty()) {
+      return false;
+    }
+    if (this.evualuador.evaluaSiExiste(contraseñaEntrada, contraseñaRecuperada)) {
+      return true;
+    } else {
+      return false; 
+    }
   }
 
   private boolean existeIdentificador(String identificador) {
@@ -201,6 +230,7 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
         return false;
       }
     } catch (SQLException exception) {
+      exception.printStackTrace();
       Logger.getLogger(AccesoDatosUsuario.class.getName()).log(Level.SEVERE, null, exception);
     } finally {
       Conexion.cierraConexionRepositorio();

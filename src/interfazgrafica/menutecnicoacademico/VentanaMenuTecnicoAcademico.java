@@ -10,6 +10,8 @@ package interfazgrafica.menutecnicoacademico;
  * @author Alberto Sánchez
  */
 public class VentanaMenuTecnicoAcademico extends javax.swing.JFrame {
+  
+  String rolNecesario = "TA";
 
   /**
    * Creates new form VentanaMenuTecnicoAcademico

@@ -10,6 +10,8 @@ package interfazgrafica.administrarhardware;
  * @author Alberto Sánchez
  */
 public class VentanaAñadirHardware extends javax.swing.JFrame {
+  
+  String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaAñadirHardware

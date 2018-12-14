@@ -32,13 +32,16 @@ public class InventarioUsuario implements InventarioUsuarioInterface{
   }
 
   @Override
-  public boolean actualizaUsuaraio(Usuario usuario) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public boolean actualizaUsuario(Usuario usuario) {
+    if (this.repositorioUsuario.actualizaUsuarioRepositorio(usuario)) {
+      return true;
+    }
+    return false;
   }
 
   @Override
   public Usuario buscaUsuario(String idUsuario) {
-    Usuario usuarioEncontrado = this.repositorioUsuario.buscaUsuaraioRepositorio(idUsuario);
+    Usuario usuarioEncontrado = this.repositorioUsuario.buscaUsuarioRepositorio(idUsuario);
     if (usuarioEncontrado == null) {
       return null;
     } else {
@@ -48,12 +51,15 @@ public class InventarioUsuario implements InventarioUsuarioInterface{
 
   @Override
   public boolean eliminaUsuario(String idUsuario) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    if (this.repositorioUsuario.eliminaUsuarioRepositorio(idUsuario)) {
+      return true;
+    }
+    return false;
   }
 
   @Override
   public boolean guardaUsuario(Usuario usuario) {
-    if (this.repositorioUsuario.guardaUsuarioRepositorio(usuario) == true) {
+    if (this.repositorioUsuario.guardaUsuarioRepositorio(usuario)) {
       return true;
     }
     return false;
@@ -61,7 +67,12 @@ public class InventarioUsuario implements InventarioUsuarioInterface{
 
   @Override
   public List<Usuario> regresaListaUsuario() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    this.listaUsuarios = this.repositorioUsuario.regresaListaUsuarioRepositorio();
+    if (this.listaUsuarios == null || this.listaUsuarios.isEmpty()) {
+      return null;
+    } else {
+    return this.listaUsuarios;
+    }
   }
 
   @Override

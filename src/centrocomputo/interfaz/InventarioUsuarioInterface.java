@@ -22,7 +22,7 @@ public interface InventarioUsuarioInterface {
   
   public boolean eliminaUsuario(String idUsuario);
   
-  public boolean actualizaUsuaraio(Usuario usuario);
+  public boolean actualizaUsuario(Usuario usuario);
   
   public Usuario buscaUsuario(String idUsuario);
   

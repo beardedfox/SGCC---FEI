@@ -5,19 +5,38 @@
  */
 package interfazgrafica.administrarusuarios;
 
+import CentroComputo.*;
+import centrocomputo.interfaz.*;
+import java.util.*;
+import javax.swing.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaModificarUsuario extends javax.swing.JFrame {
 
+  private static final int NUMEROMAXIMOACEPTADO = 25;
+  private static final int INGRESOSATISFACTORIO = 1;
+  private static final int DATOSINVALIDOS = 2;
+  private static final int INGRESOINVALIDO = 3;
+  InventarioUsuarioInterface inventarioUsuario;
+  VentanaAdministrarUsuarios ventanaCrudUsuarios = null;
+  private static VentanaModificarUsuario ventanaModificar = null;
+  ArrayList<JTextField> textFields = new ArrayList<>();
+  private String identificadorFila = null;
   String rolNecesario = "JCC";
   
   /**
    * Creates new form VentanaModificarUsuario
    */
-  public VentanaModificarUsuario() {
+  VentanaModificarUsuario(VentanaAdministrarUsuarios ventanaCrudUsuarios, InventarioUsuarioInterface inventarioUsuario) {
+    this.inventarioUsuario = inventarioUsuario;
+    this.ventanaModificar = ventanaModificar;
+    this.ventanaCrudUsuarios = ventanaCrudUsuarios;
+    identificadorFila = ventanaCrudUsuarios.getIdentificadorFila();
     initComponents();
+    asignaValoresTextBox();
   }
 
   /**
@@ -36,43 +55,38 @@ public class VentanaModificarUsuario extends javax.swing.JFrame {
     jLabelEtiquetaModificarTecnicoAcademico = new javax.swing.JLabel();
     jLabelNombre = new javax.swing.JLabel();
     jLabelApellido = new javax.swing.JLabel();
-    jLabelNumeroPersonal = new javax.swing.JLabel();
     jLabelTelefono = new javax.swing.JLabel();
     jLabelCorreo = new javax.swing.JLabel();
-    jTextFieldCorreo = new javax.swing.JTextField();
-    jTextFieldTelefono = new javax.swing.JTextField();
-    jTextFieldNumeroPersonal = new javax.swing.JTextField();
-    jTextFieldApellido = new javax.swing.JTextField();
-    jTextFieldNombre = new javax.swing.JTextField();
     jButtonGuardar = new javax.swing.JButton();
+    jTextFieldNombre = new javax.swing.JTextField();
+    jTextFieldApellido = new javax.swing.JTextField();
+    jTextFieldTelefono = new javax.swing.JTextField();
+    jTextFieldCorreo = new javax.swing.JTextField();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     jPanelModificar.setBackground(new java.awt.Color(255, 255, 255));
 
     jLabelRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresarMouseClicked(evt);
+      }
+    });
 
     jLabelEtiquetaRegresar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
     jLabelEtiquetaRegresar.setText("Regresar");
 
     jLabelEtiquetaModificarTecnicoAcademico.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-    jLabelEtiquetaModificarTecnicoAcademico.setText("Modificar técnico académico");
+    jLabelEtiquetaModificarTecnicoAcademico.setText("Modificar Usuario (TA)");
 
     jLabelNombre.setText("Nombre(s):");
 
     jLabelApellido.setText("Apellido(s):");
 
-    jLabelNumeroPersonal.setText("No. personal:");
-
     jLabelTelefono.setText("Telefono:");
 
     jLabelCorreo.setText("Correo:");
-
-    jTextFieldNumeroPersonal.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jTextFieldNumeroPersonalActionPerformed(evt);
-      }
-    });
 
     jButtonGuardar.setText("Guardar");
     jButtonGuardar.setBorder(null);
@@ -95,41 +109,35 @@ public class VentanaModificarUsuario extends javax.swing.JFrame {
             .addComponent(jLabelEtiquetaRegresar)
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModificarLayout.createSequentialGroup()
-            .addGap(0, 77, Short.MAX_VALUE)
+            .addGap(0, 96, Short.MAX_VALUE)
             .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModificarLayout.createSequentialGroup()
-                .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(112, 112, 112))
-              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModificarLayout.createSequentialGroup()
                 .addComponent(jLabelEtiquetaModificarTecnicoAcademico)
-                .addGap(73, 73, 73))))))
+                .addGap(73, 73, 73))
+              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModificarLayout.createSequentialGroup()
+                .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                  .addComponent(jLabelTelefono, javax.swing.GroupLayout.Alignment.TRAILING)
+                  .addComponent(jLabelCorreo, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                  .addComponent(jTextFieldNombre)
+                  .addComponent(jTextFieldApellido)
+                  .addComponent(jTextFieldTelefono)
+                  .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
+                .addGap(82, 82, 82))
+              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelModificarLayout.createSequentialGroup()
+                .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(113, 113, 113))))))
       .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanelModificarLayout.createSequentialGroup()
-          .addGap(79, 79, 79)
           .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelModificarLayout.createSequentialGroup()
-              .addGap(11, 11, 11)
-              .addComponent(jLabelNombre)
-              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-              .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+              .addGap(90, 90, 90)
+              .addComponent(jLabelNombre))
             .addGroup(jPanelModificarLayout.createSequentialGroup()
-              .addGap(19, 19, 19)
-              .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jLabelTelefono)
-                .addComponent(jLabelCorreo))
-              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-              .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jTextFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addGroup(jPanelModificarLayout.createSequentialGroup()
-              .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jLabelApellido)
-                .addComponent(jLabelNumeroPersonal))
-              .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-              .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jTextFieldNumeroPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))))
-          .addContainerGap(80, Short.MAX_VALUE)))
+              .addGap(90, 90, 90)
+              .addComponent(jLabelApellido)))
+          .addContainerGap(194, Short.MAX_VALUE)))
     );
     jPanelModificarLayout.setVerticalGroup(
       jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,32 +148,28 @@ public class VentanaModificarUsuario extends javax.swing.JFrame {
           .addComponent(jLabelRegresar))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(jLabelEtiquetaModificarTecnicoAcademico)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 219, Short.MAX_VALUE)
+        .addGap(30, 30, 30)
+        .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(18, 18, 18)
+        .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jTextFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabelTelefono))
+        .addGap(18, 18, 18)
+        .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabelCorreo))
+        .addGap(26, 26, 26)
         .addComponent(jButtonGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(30, 30, 30))
+        .addContainerGap(28, Short.MAX_VALUE))
       .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(jPanelModificarLayout.createSequentialGroup()
-          .addGap(97, 97, 97)
-          .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-            .addComponent(jLabelNombre)
-            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addGap(100, 100, 100)
+          .addComponent(jLabelNombre)
           .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-          .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-            .addComponent(jLabelApellido)
-            .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-          .addGap(14, 14, 14)
-          .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTextFieldNumeroPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jLabelNumeroPersonal))
-          .addGap(18, 18, 18)
-          .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelTelefono)
-            .addComponent(jTextFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-          .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-          .addGroup(jPanelModificarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-            .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jLabelCorreo))
-          .addContainerGap(98, Short.MAX_VALUE)))
+          .addComponent(jLabelApellido)
+          .addContainerGap(167, Short.MAX_VALUE)))
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -182,56 +186,116 @@ public class VentanaModificarUsuario extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  private void jTextFieldNumeroPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNumeroPersonalActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jTextFieldNumeroPersonalActionPerformed
-
   private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
-    // TODO add your handling code here:
+    this.textFields = this.regresaListaTextBox();
+    if (!listaTextBoxEsValida(textFields)) {
+      despliegaAviso(DATOSINVALIDOS);
+    } else {
+      if (actualizaUsuario(obtieneValoresTextBox())) {
+        despliegaAviso(INGRESOSATISFACTORIO);
+      } else {
+        despliegaAviso(INGRESOINVALIDO);
+      }
+    }
   }//GEN-LAST:event_jButtonGuardarActionPerformed
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /*
-     * Set the Nimbus look and feel
-     */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /*
-     * If Nimbus (introduced in Java SE 6) is not available, stay with the
-     * default look and feel.
-     * For details see
-     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+   private void despliegaAviso(int tipoAdvertencia) {
+
+    switch (tipoAdvertencia) {
+    case 1:
+      JOptionPane.showMessageDialog(VentanaModificarUsuario.this,
+              "EL usuario ha sido modificado satisfactoriamente", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+      this.limpiaCampos();
+      regresaVentana();
+      break;
+
+    case 2:
+      JOptionPane.showMessageDialog(VentanaModificarUsuario.this,
+              "Los datos del usuario son inválidos o estaban vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+      this.limpiaCampos();
+      regresaVentana();
+      break;
+
+    case 3:
+      JOptionPane.showMessageDialog(VentanaModificarUsuario.this,
+              "No se ha podido ingresar el usuario", "Advertencia", JOptionPane.ERROR_MESSAGE);
+      this.limpiaCampos();
+      regresaVentana();
+      break;
+
+    default:
+      break;
     }
-    //</editor-fold>
-
-    /*
-     * Create and display the form
-     */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new VentanaModificarUsuario().setVisible(true);
-      }
-    });
   }
+  
+  private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
+    regresaVentana();
+  }//GEN-LAST:event_jLabelRegresarMouseClicked
 
+  private void regresaVentana() {
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaCrudUsuarios.setVisible(true);
+  }
+  
+  private boolean actualizaUsuario(Usuario usuarioPorAñadir) {
+    System.out.println(usuarioPorAñadir.getNombres());
+    System.out.println(usuarioPorAñadir.getApellido());
+    System.out.println(usuarioPorAñadir.getTelefonoConExtension());
+    System.out.println(usuarioPorAñadir.getCorreoInstitucional());
+    System.out.println(usuarioPorAñadir.getIdentificador());
+    if (VentanaModificarUsuario.this.inventarioUsuario.actualizaUsuario(usuarioPorAñadir)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+    
+  private void asignaValoresTextBox(){
+    Usuario usuario = VentanaModificarUsuario.this.inventarioUsuario
+            .buscaUsuario(identificadorFila);
+    this.jTextFieldNombre.setText(usuario.getNombres());
+    this.jTextFieldApellido.setText(usuario.getApellido());
+    this.jTextFieldTelefono.setText(usuario.getTelefonoConExtension());
+    this.jTextFieldCorreo.setText(usuario.getCorreoInstitucional());
+  }
+  
+  private Usuario obtieneValoresTextBox(){
+    Usuario usuario = new Usuario();
+    usuario.setNombres(this.jTextFieldNombre.getText());
+    usuario.setApellido(this.jTextFieldApellido.getText());
+    usuario.setIdentificador(identificadorFila);
+    usuario.setRolTecnicoAcademico();
+    usuario.setTelefonoConExtension(this.jTextFieldTelefono.getText());
+    usuario.setCorreoInstitucional(this.jTextFieldCorreo.getText());
+    return usuario;
+  }
+  
+  private ArrayList<JTextField> regresaListaTextBox(){
+     ArrayList<JTextField> textFields = new ArrayList<>();
+            textFields.add(jTextFieldNombre);
+            textFields.add(jTextFieldApellido);
+            textFields.add(jTextFieldTelefono);
+            textFields.add(jTextFieldCorreo);
+            return textFields;
+  }
+  
+  private boolean listaTextBoxEsValida(ArrayList<JTextField> textFields) {
+    for (JTextField textbox : textFields) {
+            if (textbox.getText().trim().isEmpty() || 
+                    textbox.getText().toString().length() > NUMEROMAXIMOACEPTADO) {
+                return false;  
+            }
+        }
+    return true;
+  }
+ 
+  private void limpiaCampos() {
+    for (JTextField textbox : this.textFields) {
+      textbox.setText("");
+    }
+  }
+  
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton jButtonGuardar;
   private javax.swing.JLabel jLabelApellido;
@@ -239,14 +303,12 @@ public class VentanaModificarUsuario extends javax.swing.JFrame {
   private javax.swing.JLabel jLabelEtiquetaModificarTecnicoAcademico;
   private javax.swing.JLabel jLabelEtiquetaRegresar;
   private javax.swing.JLabel jLabelNombre;
-  private javax.swing.JLabel jLabelNumeroPersonal;
   private javax.swing.JLabel jLabelRegresar;
   private javax.swing.JLabel jLabelTelefono;
   private javax.swing.JPanel jPanelModificar;
   private javax.swing.JTextField jTextFieldApellido;
   private javax.swing.JTextField jTextFieldCorreo;
   private javax.swing.JTextField jTextFieldNombre;
-  private javax.swing.JTextField jTextFieldNumeroPersonal;
   private javax.swing.JTextField jTextFieldTelefono;
   // End of variables declaration//GEN-END:variables
 }

@@ -6,9 +6,12 @@
 package interfazgrafica.menujefecentrocomputo;
 
 import centrocomputo.interfaz.*;
+import centrocomputo.inventario.*;
 import interfazgrafica.administrarhardware.*;
 import interfazgrafica.administrarresponsables.*;
 import interfazgrafica.administrarusuarios.*;
+import repositorio.dataaccesobject.*;
+import repositorio.interfaz.*;
 
 /**
  *
@@ -142,6 +145,8 @@ public class VentanaMenuJefeCentroComputo extends javax.swing.JFrame {
   }//GEN-LAST:event_jButtonAdministrarResponsablesMouseClicked
 
   private void despliegaVentanaAdministrarUsuarios(){
+    AccesoDatosUsuarioInterface repositorioUsuario = new AccesoDatosUsuario();
+    InventarioUsuarioInterface inventarioUsuario = InventarioUsuario.obtieneInstancia(repositorioUsuario);
     VentanaAdministrarUsuarios ventanaUsuarios 
             = new VentanaAdministrarUsuarios(this, inventarioUsuario);
     ventanaUsuarios.setLocationRelativeTo(null);

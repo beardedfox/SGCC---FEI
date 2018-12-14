@@ -27,8 +27,8 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
    private List<Usuario> listaUsuarios;
 
   @Override
-  public boolean actualizaUsuaraioRepositorio(Usuario usuario) {
-    if (this.existeIdentificador(usuario.getIdentificador()) == true) {
+  public boolean actualizaUsuarioRepositorio(Usuario usuario) {
+    if (usuario.getIdentificador() == null){
       return false;
     }
     consultaSql = "UPDATE sgcc.usuario "
@@ -36,7 +36,8 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
             + "idnumeropersonal = (?), telefono = (?),"
             + " correoinstitucional = (?) "
             + "WHERE idnumeropersonal = (?);";
-    try (PreparedStatement consultaParametrizada = Conexion.obtieneConexionepositorio().prepareStatement(consultaSql)) {
+    try (PreparedStatement consultaParametrizada = Conexion.obtieneConexionepositorio()
+            .prepareStatement(consultaSql)) {
       consultaParametrizada.setString(1, usuario.getNombres());
       consultaParametrizada.setString(2, usuario.getApellido());
       consultaParametrizada.setString(3, usuario.getIdentificador());
@@ -55,14 +56,15 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
   }
 
   @Override
-  public Usuario buscaUsuaraioRepositorio(String idUsuario) {
+  public Usuario buscaUsuarioRepositorio(String idUsuario) {
     if (idUsuario == null){
       return null;
     }
     consultaSql = "SELECT nombres, apellidos, idnumeropersonal, correoinstitucional,"
             + " rol, telefono, estado FROM usuario WHERE idnumeropersonal = (?);";
    Usuario usuario = new Usuario();
-   try (PreparedStatement consultaParametrizada = Conexion.obtieneConexionepositorio().prepareStatement(consultaSql)){
+   try (PreparedStatement consultaParametrizada = Conexion.obtieneConexionepositorio()
+           .prepareStatement(consultaSql)){
      consultaParametrizada.setString(1, idUsuario);
      ResultSet result = consultaParametrizada.executeQuery();
      if(result.next()){
@@ -89,7 +91,7 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
     if (idUsuario == null) {
       return false;
     }
-    consultaSql = "delete from articulodb.articulo where idarticulo = (?)";
+    consultaSql = "UPDATE usuario SET estado = 0 WHERE idnumeropersonal = (?);";
     try (PreparedStatement consultaParametrizada = Conexion.obtieneConexionepositorio().prepareStatement(consultaSql)) {
       consultaParametrizada.setString(1, idUsuario);
       consultaParametrizada.executeUpdate();
@@ -140,10 +142,9 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
 
   @Override
   public List<Usuario> regresaListaUsuarioRepositorio() {
-    consultaSql = "SELECT idnumeropersonal, contraseña, nombres, apellidos,"
-            + " correoinstitucional, rol, telefono, estado  "
+    consultaSql = "SELECT idnumeropersonal, nombres, apellidos, correoinstitucional "
             + "FROM usuario "
-            + "WHERE idnumeropersonal != 'ADMINISTRADOR'; ";
+            + "WHERE idnumeropersonal != 'ADMINISTRADOR';";
     listaUsuarios = new ArrayList<>();
     try (PreparedStatement consultaParametrizada = Conexion.obtieneConexionepositorio()
             .prepareStatement(consultaSql)) {
@@ -151,13 +152,9 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
         while (result.next()) {
           Usuario usuario = new Usuario();
           usuario.setIdentificador(result.getNString(1));
-          usuario.setContrasenia(result.getNString(2));
-          usuario.setNombres(result.getNString(3));
-          usuario.setApellido(result.getNString(4));
-          usuario.setCorreoInstitucional(result.getNString(5));
-          usuario.setRol(result.getNString(result.getNString(6)));
-          usuario.setTelefonoConExtension(result.getNString(7));
-          usuario.setEstado(result.getInt(8));
+          usuario.setNombres(result.getNString(2));
+          usuario.setApellido(result.getNString(3));
+          usuario.setCorreoInstitucional(result.getNString(4));
           listaUsuarios.add(usuario);
         }
       }
@@ -168,7 +165,7 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
     } finally {
       Conexion.cierraConexionRepositorio();
     }
-    if (listaUsuarios.isEmpty()){
+    if (listaUsuarios == null || listaUsuarios.isEmpty()) {
       return null;
     }
     return listaUsuarios;

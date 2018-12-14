@@ -16,9 +16,11 @@ public class Usuario {
 
   public Usuario() {
   }
+  
+  
   		
   public Usuario(String identificador, String nombres, String apellido,
-          String correoInstitucional, String contrasenia, String rol,
+          String correoInstitucional, String contrasenia,
           String telefonoConExtension) {
     this.identificador = identificador;
     this.nombres = nombres;
@@ -27,6 +29,7 @@ public class Usuario {
     this.contrasenia = contrasenia;
     this.rol = ROLTECNICOACADEMICO;
     this.telefonoConExtension = telefonoConExtension;
+    this.estado = ESTADOHABILITADO;
   }
 
   public int getEstado() {

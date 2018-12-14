@@ -24,8 +24,8 @@ public interface AccesoDatosUsuarioInterface {
   
   public boolean eliminaUsuarioRepositorio (String idUsuario);
   
-  public boolean actualizaUsuaraioRepositorio (Usuario usuario);
+  public boolean actualizaUsuarioRepositorio (Usuario usuario);
   
-  public Usuario buscaUsuaraioRepositorio (String idUsuario);
+  public Usuario buscaUsuarioRepositorio (String idUsuario);
   
 }

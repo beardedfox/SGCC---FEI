@@ -5,21 +5,52 @@
  */
 package interfazgrafica.administrarusuarios;
 
+import CentroComputo.*;
+import centrocomputo.interfaz.*;
+import javax.swing.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaVisualizarUsuario extends javax.swing.JFrame {
   
+  InventarioUsuarioInterface inventarioUsuario;
+  VentanaAdministrarUsuarios ventanaCrudUsuarios = null;
+  private String identificadorFila = null;
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaVisualizarUsuario
    */
-  public VentanaVisualizarUsuario() {
+  VentanaVisualizarUsuario(VentanaAdministrarUsuarios ventanaCrudUsuarios, InventarioUsuarioInterface inventarioUsuario) {
+    this.inventarioUsuario = inventarioUsuario;
+    this.ventanaCrudUsuarios = ventanaCrudUsuarios;
+    identificadorFila = ventanaCrudUsuarios.getIdentificadorFila();
     initComponents();
+    despliegaUsuario();
   }
 
+  public void setjLabelVisualizarApellido(String apellidoRecuperado) {
+    this.jLabelVisualizarApellido.setText(apellidoRecuperado);
+  }
+
+  public void setjLabelVisualizarCorreo(String correoRecuperado) {
+    this.jLabelVisualizarCorreo.setText(correoRecuperado);
+  }
+
+  public void setjLabelVisualizarNombre(String nombreRecuperado) {
+    this.jLabelVisualizarNombre.setText(nombreRecuperado);
+  }
+
+  public void setjLabelVisualizarNumeroPersonal(String numeroPersonal) {
+    this.jLabelVisualizarNumeroPersonal.setText(numeroPersonal);
+  }
+
+  public void setjLabelVisualizarTelefono(String visualizarTelefono) {
+    this.jLabelVisualizarTelefono.setText(visualizarTelefono);
+  }
+  
   /**
    * This method is called from within the constructor to
    * initialize the form.
@@ -56,6 +87,11 @@ public class VentanaVisualizarUsuario extends javax.swing.JFrame {
     jLabelEtiquetaRegresar.setText("Regresar");
 
     jLabelRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresarMouseClicked(evt);
+      }
+    });
 
     jLabelEtiquetaVisualizarTecnicoAcademico.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
     jLabelEtiquetaVisualizarTecnicoAcademico.setText("Visualizar técnico académico");
@@ -163,48 +199,36 @@ public class VentanaVisualizarUsuario extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /*
-     * Set the Nimbus look and feel
-     */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /*
-     * If Nimbus (introduced in Java SE 6) is not available, stay with the
-     * default look and feel.
-     * For details see
-     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
+  private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
+    regresaVentana();
+  }//GEN-LAST:event_jLabelRegresarMouseClicked
 
-    /*
-     * Create and display the form
-     */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new VentanaVisualizarUsuario().setVisible(true);
-      }
-    });
+   private void regresaVentana() {
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaCrudUsuarios.setVisible(true);
   }
-
+   
+  private void despliegaUsuario() {
+    if (!recuperaUsuario()) {
+      JOptionPane.showMessageDialog(VentanaVisualizarUsuario.this,
+              "No se ha podido recuperar la información del usuario ", "Advertencia", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+   
+  private boolean recuperaUsuario() {
+    Usuario usuario = VentanaVisualizarUsuario.this.inventarioUsuario.buscaUsuario(identificadorFila);
+    if (usuario != null) {
+      this.setjLabelVisualizarNombre(usuario.getNombres());
+      this.setjLabelVisualizarApellido(usuario.getApellido());
+      this.setjLabelVisualizarCorreo(usuario.getCorreoInstitucional());
+      this.setjLabelVisualizarTelefono(usuario.getTelefonoConExtension());
+      this.setjLabelVisualizarNumeroPersonal(usuario.getIdentificador());
+      return true;
+    }
+    return false;
+  }
+  
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JLabel jLabel5;
   private javax.swing.JLabel jLabelApellido;

@@ -5,18 +5,39 @@
  */
 package interfazgrafica.administrarhardware;
 
+import CentroComputo.*;
+import centrocomputo.interfaz.*;
+import java.sql.Date;
+import java.text.*;
+import java.time.*;
+import java.time.format.*;
+import java.util.*;
+import java.util.logging.*;
+import javax.swing.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaAñadirHardware extends javax.swing.JFrame {
   
+  private static final int NUMEROMAXIMOACEPTADO = 25;
+  private static final int INGRESOSATISFACTORIO = 1;
+  private static final int DATOSINVALIDOS = 2;
+  private static final int INGRESOINVALIDO = 3;
+  InventarioHardwareInterface inventarioHardware;
+  VentanaAdministrarHardware ventanaCrudHardware = null;
+  private static VentanaAñadirHardware ventanaAgregar = null;
+  ArrayList<JTextField> textFields = new ArrayList<>();
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaAñadirHardware
    */
-  public VentanaAñadirHardware() {
+  VentanaAñadirHardware(VentanaAdministrarHardware ventanaCrudHardware, InventarioHardwareInterface inventarioHardware) {
+    this.inventarioHardware = inventarioHardware;
+    this.ventanaAgregar = ventanaAgregar;
+    this.ventanaCrudHardware = ventanaCrudHardware;
     initComponents();
   }
 
@@ -30,38 +51,41 @@ public class VentanaAñadirHardware extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
+    dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
+    dateChooserDialog2 = new datechooser.beans.DateChooserDialog();
+    dateChooserCombo1 = new datechooser.beans.DateChooserCombo();
     jPanelAñadir = new javax.swing.JPanel();
     jLabelRegresar = new javax.swing.JLabel();
     jLabelEtiquetaRegresar = new javax.swing.JLabel();
     jLabelEtiquetaAñadirHardware = new javax.swing.JLabel();
     jLabelNumeroInventario = new javax.swing.JLabel();
     jLabelMarca = new javax.swing.JLabel();
-    jLabelResponsable = new javax.swing.JLabel();
     jLabelTipo = new javax.swing.JLabel();
     jLabelFecha = new javax.swing.JLabel();
-    jLabelTipo2 = new javax.swing.JLabel();
     jTextFieldNumeroInventario = new javax.swing.JTextField();
     jTextFieldMarca = new javax.swing.JTextField();
     jLabelModelo = new javax.swing.JLabel();
     jLabelNumeroSerie = new javax.swing.JLabel();
     jLabelUbicacion = new javax.swing.JLabel();
-    jLabelEstado = new javax.swing.JLabel();
     jLabelPartes = new javax.swing.JLabel();
-    jTextFieldPartes = new javax.swing.JTextField();
-    jTextFieldUbicacion = new javax.swing.JTextField();
     jTextFieldNumeroSerie = new javax.swing.JTextField();
     jTextFieldModelo = new javax.swing.JTextField();
-    jComboBoxResponsable = new javax.swing.JComboBox<>();
     jComboBoxTipo = new javax.swing.JComboBox<>();
-    jComboBoxEstado = new javax.swing.JComboBox<>();
-    dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
     jButtonGuardar = new javax.swing.JButton();
+    jComboBoxUbicacion = new javax.swing.JComboBox<>();
+    jComboBoxPartes = new javax.swing.JComboBox<>();
+    dateChooserComboFechaAadquisicion = new com.toedter.calendar.JDateChooser();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     jPanelAñadir.setBackground(new java.awt.Color(255, 255, 255));
 
     jLabelRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresarMouseClicked(evt);
+      }
+    });
 
     jLabelEtiquetaRegresar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
     jLabelEtiquetaRegresar.setText("Regresar");
@@ -73,8 +97,6 @@ public class VentanaAñadirHardware extends javax.swing.JFrame {
 
     jLabelMarca.setText("Marca:");
 
-    jLabelResponsable.setText("Responsable:");
-
     jLabelTipo.setText("Tipo:");
 
     jLabelFecha.setText("Fecha Adquisición:");
@@ -85,66 +107,65 @@ public class VentanaAñadirHardware extends javax.swing.JFrame {
 
     jLabelUbicacion.setText("Ubicacion:");
 
-    jLabelEstado.setText("Estado:");
-
     jLabelPartes.setText("Partes:");
 
-    jComboBoxResponsable.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-    jComboBoxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-    jComboBoxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    jComboBoxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pc escritorio", "Laptop", "Monitor", "Disco duro", "Disco duro Solido" }));
 
     jButtonGuardar.setText("Guardar");
+    jButtonGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jButtonGuardarMouseClicked(evt);
+      }
+    });
+
+    jComboBoxUbicacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Area de apoyo técnico ", "Area de impresiones", "Aula cc4", "Aula cc3 ", "Aula cc2 ", "Aula cc1" }));
+
+    jComboBoxPartes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Completo", "Incompleto" }));
 
     javax.swing.GroupLayout jPanelAñadirLayout = new javax.swing.GroupLayout(jPanelAñadir);
     jPanelAñadir.setLayout(jPanelAñadirLayout);
     jPanelAñadirLayout.setHorizontalGroup(
       jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanelAñadirLayout.createSequentialGroup()
+        .addGap(18, 18, 18)
         .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(jPanelAñadirLayout.createSequentialGroup()
-            .addGap(18, 18, 18)
             .addComponent(jLabelRegresar)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabelTipo2)
-              .addComponent(jLabelEtiquetaRegresar)))
+            .addComponent(jLabelEtiquetaRegresar))
           .addGroup(jPanelAñadirLayout.createSequentialGroup()
-            .addGap(42, 42, 42)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jLabelTipo)
-                .addComponent(jLabelResponsable)
-                .addComponent(jLabelMarca)
-                .addComponent(jLabelFecha, javax.swing.GroupLayout.Alignment.LEADING))
-              .addComponent(jLabelNumeroInventario, javax.swing.GroupLayout.Alignment.TRAILING))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGap(26, 26, 26)
+            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+              .addComponent(jLabelTipo)
+              .addComponent(jLabelMarca)
+              .addComponent(jLabelNumeroInventario)
+              .addComponent(jLabelFecha))
+            .addGap(18, 18, 18)
             .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
               .addComponent(jTextFieldNumeroInventario)
               .addComponent(jTextFieldMarca)
-              .addComponent(jComboBoxResponsable, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
               .addComponent(jComboBoxTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+              .addComponent(dateChooserComboFechaAadquisicion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelAñadirLayout.createSequentialGroup()
+                  .addGap(20, 20, 20)
+                  .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabelNumeroSerie)
+                    .addComponent(jLabelModelo)))
+                .addGroup(jPanelAñadirLayout.createSequentialGroup()
+                  .addGap(18, 18, 18)
+                  .addComponent(jLabelUbicacion)))
               .addGroup(jPanelAñadirLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                  .addComponent(jLabelNumeroSerie)
-                  .addComponent(jLabelModelo)
-                  .addComponent(jLabelEstado)
-                  .addComponent(jLabelPartes)))
-              .addGroup(jPanelAñadirLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabelUbicacion)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelPartes)))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
               .addComponent(jTextFieldModelo)
               .addComponent(jTextFieldNumeroSerie)
-              .addComponent(jTextFieldUbicacion)
-              .addComponent(jTextFieldPartes)
-              .addComponent(jComboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))))
-        .addContainerGap(59, Short.MAX_VALUE))
+              .addComponent(jComboBoxUbicacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+              .addComponent(jComboBoxPartes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        .addContainerGap(58, Short.MAX_VALUE))
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAñadirLayout.createSequentialGroup()
         .addGap(0, 0, Short.MAX_VALUE)
         .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,52 +180,40 @@ public class VentanaAñadirHardware extends javax.swing.JFrame {
       jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAñadirLayout.createSequentialGroup()
         .addContainerGap()
-        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-          .addGroup(jPanelAñadirLayout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(jButtonGuardar))
-          .addGroup(jPanelAñadirLayout.createSequentialGroup()
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-              .addComponent(jLabelRegresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(jLabelEtiquetaRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(2, 2, 2)
-            .addComponent(jLabelEtiquetaAñadirHardware)
-            .addGap(26, 26, 26)
+        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+          .addComponent(jLabelRegresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(jLabelEtiquetaRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(2, 2, 2)
+        .addComponent(jLabelEtiquetaAñadirHardware)
+        .addGap(26, 26, 26)
+        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabelNumeroInventario)
+          .addComponent(jTextFieldNumeroInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabelModelo)
+          .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jLabelNumeroSerie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(jLabelMarca)
+            .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jTextFieldNumeroSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabelUbicacion)
+          .addComponent(jComboBoxUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabelTipo))
+        .addGap(18, 18, 18)
+        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+            .addComponent(jLabelFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(jLabelNumeroInventario)
-              .addComponent(jTextFieldNumeroInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jLabelModelo)
-              .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabelNumeroSerie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabelMarca)
-                .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jTextFieldNumeroSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(jLabelUbicacion)
-              .addComponent(jTextFieldUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jComboBoxResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jLabelResponsable))
-            .addGap(13, 13, 13)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(jLabelTipo)
-              .addComponent(jLabelEstado)
-              .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jComboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(15, 15, 15)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(jPanelAñadirLayout.createSequentialGroup()
-                .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                  .addComponent(jLabelPartes, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addComponent(jTextFieldPartes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-              .addComponent(jLabelFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, Short.MAX_VALUE))
-            .addGap(40, 40, 40)
-            .addComponent(jLabelTipo2)))
+              .addComponent(jComboBoxPartes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+              .addComponent(jLabelPartes, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
+          .addComponent(dateChooserComboFechaAadquisicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+        .addComponent(jButtonGuardar)
         .addGap(31, 31, 31))
     );
 
@@ -212,7 +221,7 @@ public class VentanaAñadirHardware extends javax.swing.JFrame {
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addComponent(jPanelAñadir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+      .addComponent(jPanelAñadir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -222,13 +231,128 @@ public class VentanaAñadirHardware extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
+  private void jButtonGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGuardarMouseClicked
+    this.textFields = this.regresaListaTextBox();
+    if (!listaTextBoxEsValida(textFields)|| !validaFechaIngresada()) {
+      despliegaAviso(DATOSINVALIDOS);
+    } else {
+      if (añadeHardware(obtieneValores())) {
+        despliegaAviso(INGRESOSATISFACTORIO);
+      } else {
+        despliegaAviso(INGRESOINVALIDO);
+      }
+    }
+  }//GEN-LAST:event_jButtonGuardarMouseClicked
+
+  private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
+    regresaVentana();
+  }//GEN-LAST:event_jLabelRegresarMouseClicked
+
+  
+   private void despliegaAviso(int tipoAdvertencia) {
+
+    switch (tipoAdvertencia) {
+    case 1:
+      JOptionPane.showMessageDialog(VentanaAñadirHardware.this,
+              "EL usuario ha sido agregado satisfactoriamente", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+      this.limpiaCampos();
+      break;
+
+    case 2:
+      JOptionPane.showMessageDialog(VentanaAñadirHardware.this,
+              "Los datos del usuario son inválidos o estaban vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+      this.limpiaCampos();
+      break;
+
+    case 3:
+      JOptionPane.showMessageDialog(VentanaAñadirHardware.this,
+              "No se ha podido ingresar el usuario", "Advertencia", JOptionPane.ERROR_MESSAGE);
+      this.limpiaCampos();
+      break;
+
+    default:
+      break;
+    }
+  }
+   
+   private void regresaVentana() {
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaCrudHardware.setVisible(true);
+  }
+   
+   private boolean añadeHardware(Hardware hardwarePorAñadir) {
+    if (VentanaAñadirHardware.this.inventarioHardware.guardaHardware(hardwarePorAñadir)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+   
+   private Hardware obtieneValores(){
+     
+
+    Hardware hardware = new Hardware();
+    hardware.setNumeroInventario(this.jTextFieldNumeroInventario.getText());
+    hardware.setMarca(this.jTextFieldMarca.getText());
+    hardware.setModelo(this.jTextFieldModelo.getText());
+    hardware.setNumeroSerie(this.jTextFieldNumeroSerie.getText());
+    hardware.setTipoDispositivo(this.jComboBoxTipo.getSelectedItem().toString());
+    hardware.setUbicacion(this.jComboBoxUbicacion.getSelectedItem().toString());
+    hardware.setFechaAdquisicion(convierteFechaJavaFechaSql
+        (this.dateChooserComboFechaAadquisicion.getDate()));
+     hardware.setPartesdispositivo(this.jComboBoxPartes.getSelectedItem().toString());
+    return hardware;
+  }
+   
+   public java.sql.Date convierteFechaJavaFechaSql(java.util.Date date) {
+    return new java.sql.Date(date.getTime());
+}
+   
+   private ArrayList<JTextField> regresaListaTextBox(){
+     ArrayList<JTextField> textFields = new ArrayList<>();
+            textFields.add(jTextFieldNumeroInventario);
+            textFields.add(jTextFieldMarca);
+            textFields.add(jTextFieldModelo);
+            textFields.add(jTextFieldNumeroSerie);
+            return textFields;
+  }
+   
+   private boolean listaTextBoxEsValida(ArrayList<JTextField> textFields) {
+    for (JTextField textbox : textFields) {
+            if (textbox.getText().trim().isEmpty() || 
+                    textbox.getText().toString().length() > NUMEROMAXIMOACEPTADO) {
+                return false;  
+            }
+        }
+    return true;
+  }
+   
+  private boolean validaFechaIngresada(){
+    if (this.dateChooserComboFechaAadquisicion.getDate()== null){
+      return false;
+    }
+    return true;
+  }
+ 
+  private void limpiaCampos() {
+    for (JTextField textbox : this.textFields) {
+      textbox.setText("");
+    }
+  }
+   
+  
+  
+  
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private datechooser.beans.DateChooserCombo dateChooserCombo2;
+  private datechooser.beans.DateChooserCombo dateChooserCombo1;
+  private com.toedter.calendar.JDateChooser dateChooserComboFechaAadquisicion;
+  private datechooser.beans.DateChooserDialog dateChooserDialog1;
+  private datechooser.beans.DateChooserDialog dateChooserDialog2;
   private javax.swing.JButton jButtonGuardar;
-  private javax.swing.JComboBox<String> jComboBoxEstado;
-  private javax.swing.JComboBox<String> jComboBoxResponsable;
+  private javax.swing.JComboBox<String> jComboBoxPartes;
   private javax.swing.JComboBox<String> jComboBoxTipo;
-  private javax.swing.JLabel jLabelEstado;
+  private javax.swing.JComboBox<String> jComboBoxUbicacion;
   private javax.swing.JLabel jLabelEtiquetaAñadirHardware;
   private javax.swing.JLabel jLabelEtiquetaRegresar;
   private javax.swing.JLabel jLabelFecha;
@@ -238,16 +362,12 @@ public class VentanaAñadirHardware extends javax.swing.JFrame {
   private javax.swing.JLabel jLabelNumeroSerie;
   private javax.swing.JLabel jLabelPartes;
   private javax.swing.JLabel jLabelRegresar;
-  private javax.swing.JLabel jLabelResponsable;
   private javax.swing.JLabel jLabelTipo;
-  private javax.swing.JLabel jLabelTipo2;
   private javax.swing.JLabel jLabelUbicacion;
   private javax.swing.JPanel jPanelAñadir;
   private javax.swing.JTextField jTextFieldMarca;
   private javax.swing.JTextField jTextFieldModelo;
   private javax.swing.JTextField jTextFieldNumeroInventario;
   private javax.swing.JTextField jTextFieldNumeroSerie;
-  private javax.swing.JTextField jTextFieldPartes;
-  private javax.swing.JTextField jTextFieldUbicacion;
   // End of variables declaration//GEN-END:variables
 }

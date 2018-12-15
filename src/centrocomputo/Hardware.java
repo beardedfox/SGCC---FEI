@@ -4,29 +4,34 @@ import java.sql.Date;
 
 public class Hardware {
 	
+  private final int ACTIVADO = 1;
   private String numeroInventario;
   private String numeroSerie;
   private String modelo;
   private String marca;
   private String tipoDispositivo;
-  private String estado;
+  private int estado;
   private String ubicacion;
   private Date fechaAdquisicion;
-  private int partesdispositivo;
-	
-  public Hardware(String noInventarioUv, String numeroSerie, String modelo, String marca, 
-          String tipoDispositivo, String estado, String ubicacion, Date fechaAdquisicion,
-          int partesdispositivo) {
-    this.numeroInventario = noInventarioUv;
+  private String partesdispositivo;
+
+  public Hardware(String numeroInventario, String numeroSerie, String modelo,
+          String marca, String tipoDispositivo, int estado, String ubicacion,
+          Date fechaAdquisicion, String partesdispositivo) {
+    this.numeroInventario = numeroInventario;
     this.numeroSerie = numeroSerie;
     this.modelo = modelo;
     this.marca = marca;
     this.tipoDispositivo = tipoDispositivo;
-    this.estado = estado;
+    this.estado = ACTIVADO;
     this.ubicacion = ubicacion;
     this.fechaAdquisicion = fechaAdquisicion;
     this.partesdispositivo = partesdispositivo;
   }
+	
+  public Hardware() {
+  }
+
 
   public String getNumeroInventario() {
     return numeroInventario;
@@ -48,8 +53,12 @@ public class Hardware {
     return tipoDispositivo;
   }
 
-  public String getEstado() {
+  public int getEstado() {
     return estado;
+  }
+  
+  public int getEstadoActivado() {
+    return ACTIVADO;
   }
 
   public String getUbicacion() {
@@ -60,7 +69,7 @@ public class Hardware {
     return fechaAdquisicion;
   }
 
-  public int getPartesdispositivo() {
+  public String getPartesdispositivo() {
     return partesdispositivo;
   }
 
@@ -75,7 +84,7 @@ public class Hardware {
   public void setModelo(String modelo) {
     this.modelo = modelo;
   }
-
+ 
   public void setMarca(String marca) {
     this.marca = marca;
   }
@@ -84,7 +93,7 @@ public class Hardware {
     this.tipoDispositivo = tipoDispositivo;
   }
 
-  public void setEstado(String estado) {
+  public void setEstado(int estado) {
     this.estado = estado;
   }
 
@@ -96,11 +105,7 @@ public class Hardware {
     this.fechaAdquisicion = fechaAdquisicion;
   }
 
-  public void setPartesdispositivo(int partesdispositivo) {
+  public void setPartesdispositivo(String partesdispositivo) {
     this.partesdispositivo = partesdispositivo;
   }
-  
-  
-
-  
 }

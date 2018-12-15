@@ -115,7 +115,7 @@ public class AccesoDatosUsuario implements AccesoDatosUsuarioInterface{
     Contraseña contraseña = new Contraseña();
     String contraseñaHasheada
             = contraseña.devuelveContraseñaHasheada(usuario.getContrasenia());
-    consultaSql = "INSERT INTO sgcc.usuario "
+        consultaSql = "INSERT INTO sgcc.usuario "
             + "(idnumeropersonal, contraseña, nombres, apellidos,"
             + " correoinstitucional, rol, telefono, estado)"
             + " VALUES "

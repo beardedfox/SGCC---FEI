@@ -239,11 +239,6 @@ public class VentanaModificarUsuario extends javax.swing.JFrame {
   }
   
   private boolean actualizaUsuario(Usuario usuarioPorAñadir) {
-    System.out.println(usuarioPorAñadir.getNombres());
-    System.out.println(usuarioPorAñadir.getApellido());
-    System.out.println(usuarioPorAñadir.getTelefonoConExtension());
-    System.out.println(usuarioPorAñadir.getCorreoInstitucional());
-    System.out.println(usuarioPorAñadir.getIdentificador());
     if (VentanaModificarUsuario.this.inventarioUsuario.actualizaUsuario(usuarioPorAñadir)) {
       return true;
     } else {
@@ -254,10 +249,12 @@ public class VentanaModificarUsuario extends javax.swing.JFrame {
   private void asignaValoresTextBox(){
     Usuario usuario = VentanaModificarUsuario.this.inventarioUsuario
             .buscaUsuario(identificadorFila);
+     if (usuario!= null){
     this.jTextFieldNombre.setText(usuario.getNombres());
     this.jTextFieldApellido.setText(usuario.getApellido());
     this.jTextFieldTelefono.setText(usuario.getTelefonoConExtension());
     this.jTextFieldCorreo.setText(usuario.getCorreoInstitucional());
+     }
   }
   
   private Usuario obtieneValoresTextBox(){

@@ -5,19 +5,41 @@
  */
 package interfazgrafica.administrarhardware;
 
+import CentroComputo.*;
+import centrocomputo.interfaz.*;
+import java.util.*;
+import javax.swing.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaModificarHardware extends javax.swing.JFrame {
   
+  private static final int NUMEROMAXIMOACEPTADO = 25;
+  private static final int INGRESOSATISFACTORIO = 1;
+  private static final int DATOSINVALIDOS = 2;
+  private static final int INGRESOINVALIDO = 3;
+  private static final int NOSEPUDORECUPERAR = 4;
+  InventarioHardwareInterface inventarioHardware;
+  VentanaAdministrarHardware ventanaCrudHardware = null;
+  private static VentanaModificarHardware ventanaModificar = null;
+  ArrayList<JTextField> textFields = new ArrayList<>();
+  private String identificadorFila = null;
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaModificarHardware
    */
-  public VentanaModificarHardware() {
+  VentanaModificarHardware(VentanaAdministrarHardware ventanaCrudHardware, InventarioHardwareInterface inventarioHardware) {
+    this.inventarioHardware = inventarioHardware;
+    this.ventanaModificar = ventanaModificar;
+    this.ventanaCrudHardware = ventanaCrudHardware;
+    identificadorFila = ventanaCrudHardware.getIdentificadorFila();
     initComponents();
+    if (!asignaValores()){
+      despliegaAviso(NOSEPUDORECUPERAR);
+    }
   }
 
   /**
@@ -34,28 +56,22 @@ public class VentanaModificarHardware extends javax.swing.JFrame {
     jLabelRegresar1 = new javax.swing.JLabel();
     jLabelEtiquetaRegresar1 = new javax.swing.JLabel();
     jLabelEtiquetaModificarHardware = new javax.swing.JLabel();
-    jLabelNumeroInventario = new javax.swing.JLabel();
     jLabelMarca = new javax.swing.JLabel();
-    jLabelResponsable = new javax.swing.JLabel();
     jLabelTipo = new javax.swing.JLabel();
     jLabelFecha = new javax.swing.JLabel();
     jLabelTipo2 = new javax.swing.JLabel();
-    jTextFieldNumeroInventario = new javax.swing.JTextField();
     jTextFieldMarca = new javax.swing.JTextField();
     jLabelModelo = new javax.swing.JLabel();
     jLabelNumeroSerie = new javax.swing.JLabel();
     jLabelUbicacion = new javax.swing.JLabel();
-    jLabelEstado = new javax.swing.JLabel();
     jLabelPartes = new javax.swing.JLabel();
-    jTextFieldPartes = new javax.swing.JTextField();
-    jTextFieldUbicacion = new javax.swing.JTextField();
     jTextFieldNumeroSerie = new javax.swing.JTextField();
     jTextFieldModelo = new javax.swing.JTextField();
-    jComboBoxResponsable = new javax.swing.JComboBox<>();
-    jComboBoxTipo = new javax.swing.JComboBox<>();
-    jComboBoxEstado = new javax.swing.JComboBox<>();
-    dateChooserCombo2 = new datechooser.beans.DateChooserCombo();
     jButtonGuardar = new javax.swing.JButton();
+    jComboBoxPartes = new javax.swing.JComboBox<>();
+    jComboBoxUbicacion = new javax.swing.JComboBox<>();
+    jComboBoxTipo = new javax.swing.JComboBox<>();
+    dateChooserComboFechaAadquisicion = new com.toedter.calendar.JDateChooser();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -63,6 +79,11 @@ public class VentanaModificarHardware extends javax.swing.JFrame {
     jPanelAñadir.setBackground(new java.awt.Color(255, 255, 255));
 
     jLabelRegresar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar1.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresar1MouseClicked(evt);
+      }
+    });
 
     jLabelEtiquetaRegresar1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
     jLabelEtiquetaRegresar1.setText("Regresar");
@@ -70,11 +91,7 @@ public class VentanaModificarHardware extends javax.swing.JFrame {
     jLabelEtiquetaModificarHardware.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
     jLabelEtiquetaModificarHardware.setText("Modificar hardware");
 
-    jLabelNumeroInventario.setText("No. inventario:");
-
     jLabelMarca.setText("Marca:");
-
-    jLabelResponsable.setText("Responsable:");
 
     jLabelTipo.setText("Tipo:");
 
@@ -86,17 +103,20 @@ public class VentanaModificarHardware extends javax.swing.JFrame {
 
     jLabelUbicacion.setText("Ubicacion:");
 
-    jLabelEstado.setText("Estado:");
-
     jLabelPartes.setText("Partes:");
 
-    jComboBoxResponsable.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-    jComboBoxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-    jComboBoxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
     jButtonGuardar.setText("Guardar");
+    jButtonGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jButtonGuardarMouseClicked(evt);
+      }
+    });
+
+    jComboBoxPartes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Completo", "Incompleto", " " }));
+
+    jComboBoxUbicacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Area de apoyo técnico ", "Area de impresiones", "Aula cc4", "Aula cc3 ", "Aula cc2 ", "Aula cc1" }));
+
+    jComboBoxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Monitor ", "Tarjeta madre", "Procesador ", "Memoria Ram ", "Unidad de energía ", "Disco duro sólido", "Disco duro", "Teclado ", "Mouse", " " }));
 
     javax.swing.GroupLayout jPanelAñadirLayout = new javax.swing.GroupLayout(jPanelAñadir);
     jPanelAñadir.setLayout(jPanelAñadirLayout);
@@ -113,28 +133,24 @@ public class VentanaModificarHardware extends javax.swing.JFrame {
               .addComponent(jLabelEtiquetaRegresar1)))
           .addGroup(jPanelAñadirLayout.createSequentialGroup()
             .addGap(42, 42, 42)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+              .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                 .addComponent(jLabelTipo)
-                .addComponent(jLabelResponsable)
                 .addComponent(jLabelMarca)
                 .addComponent(jLabelFecha, javax.swing.GroupLayout.Alignment.LEADING))
-              .addComponent(jLabelNumeroInventario, javax.swing.GroupLayout.Alignment.TRAILING))
+              .addComponent(jLabelPartes))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-              .addComponent(jTextFieldNumeroInventario)
               .addComponent(jTextFieldMarca)
-              .addComponent(jComboBoxResponsable, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(jComboBoxTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+              .addComponent(jComboBoxTipo, 0, 1, Short.MAX_VALUE)
+              .addComponent(dateChooserComboFechaAadquisicion, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+              .addComponent(jComboBoxPartes, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
               .addGroup(jPanelAñadirLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                   .addComponent(jLabelNumeroSerie)
-                  .addComponent(jLabelModelo)
-                  .addComponent(jLabelEstado)
-                  .addComponent(jLabelPartes)))
+                  .addComponent(jLabelModelo)))
               .addGroup(jPanelAñadirLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabelUbicacion)))
@@ -142,10 +158,8 @@ public class VentanaModificarHardware extends javax.swing.JFrame {
             .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
               .addComponent(jTextFieldModelo)
               .addComponent(jTextFieldNumeroSerie)
-              .addComponent(jTextFieldUbicacion)
-              .addComponent(jTextFieldPartes)
-              .addComponent(jComboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))))
-        .addContainerGap(59, Short.MAX_VALUE))
+              .addComponent(jComboBoxUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAñadirLayout.createSequentialGroup()
         .addGap(0, 0, Short.MAX_VALUE)
         .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,58 +168,48 @@ public class VentanaModificarHardware extends javax.swing.JFrame {
             .addGap(168, 168, 168))
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAñadirLayout.createSequentialGroup()
             .addComponent(jButtonGuardar)
-            .addGap(194, 194, 194))))
+            .addGap(180, 180, 180))))
     );
     jPanelAñadirLayout.setVerticalGroup(
       jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAñadirLayout.createSequentialGroup()
         .addContainerGap()
-        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+          .addComponent(jLabelRegresar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(jLabelEtiquetaRegresar1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addGap(2, 2, 2)
+        .addComponent(jLabelEtiquetaModificarHardware)
+        .addGap(26, 26, 26)
+        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabelModelo)
+          .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabelMarca))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+            .addComponent(jLabelNumeroSerie, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+            .addComponent(jLabelTipo)
+            .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+          .addComponent(jTextFieldNumeroSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(jPanelAñadirLayout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(jButtonGuardar))
+            .addComponent(dateChooserComboFechaAadquisicion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
           .addGroup(jPanelAñadirLayout.createSequentialGroup()
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-              .addComponent(jLabelRegresar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(jLabelEtiquetaRegresar1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(2, 2, 2)
-            .addComponent(jLabelEtiquetaModificarHardware)
-            .addGap(26, 26, 26)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(jLabelNumeroInventario)
-              .addComponent(jTextFieldNumeroInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jLabelModelo)
-              .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabelNumeroSerie, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabelMarca)
-                .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jTextFieldNumeroSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
             .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
               .addComponent(jLabelUbicacion)
-              .addComponent(jTextFieldUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jComboBoxResponsable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jLabelResponsable))
-            .addGap(13, 13, 13)
+              .addComponent(jComboBoxUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+              .addComponent(jLabelFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(18, 18, 18)
             .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-              .addComponent(jLabelTipo)
-              .addComponent(jLabelEstado)
-              .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-              .addComponent(jComboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(15, 15, 15)
-            .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(jPanelAñadirLayout.createSequentialGroup()
-                .addGroup(jPanelAñadirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                  .addComponent(jLabelPartes, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                  .addComponent(jTextFieldPartes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-              .addComponent(jLabelFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(dateChooserCombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, Short.MAX_VALUE))
-            .addGap(40, 40, 40)
-            .addComponent(jLabelTipo2)))
+              .addComponent(jLabelPartes, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+              .addComponent(jComboBoxPartes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(30, 30, 30)))
+        .addComponent(jButtonGuardar)
+        .addGap(46, 46, 46)
+        .addComponent(jLabelTipo2)
         .addGap(31, 31, 31))
     );
 
@@ -214,74 +218,150 @@ public class VentanaModificarHardware extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /*
-     * Set the Nimbus look and feel
-     */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /*
-     * If Nimbus (introduced in Java SE 6) is not available, stay with the
-     * default look and feel.
-     * For details see
-     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
+  private void jButtonGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonGuardarMouseClicked
+    this.textFields = this.regresaListaTextBox();
+    if (!listaTextBoxEsValida(textFields)|| !validaFechaIngresada()) {
+      despliegaAviso(DATOSINVALIDOS);
+    } else {
+      if (actualizaHardware(obtieneValoresTextBox())) {
+        despliegaAviso(INGRESOSATISFACTORIO);
+      } else {
+        despliegaAviso(INGRESOINVALIDO);
       }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarHardware.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarHardware.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarHardware.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarHardware.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
-    //</editor-fold>
+  }//GEN-LAST:event_jButtonGuardarMouseClicked
 
-    /*
-     * Create and display the form
-     */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new VentanaModificarHardware().setVisible(true);
-      }
-    });
+  private void jLabelRegresar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresar1MouseClicked
+    regresaVentana();
+  }//GEN-LAST:event_jLabelRegresar1MouseClicked
+
+  private void regresaVentana() {
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaCrudHardware.setVisible(true);
+  }
+  
+     private void despliegaAviso(int tipoAdvertencia) {
+
+    switch (tipoAdvertencia) {
+    case 1:
+      JOptionPane.showMessageDialog(VentanaModificarHardware.this,
+              "EL hardware ha sido modificado satisfactoriamente", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+      this.limpiaCampos();
+      regresaVentana();
+      break;
+
+    case 2:
+      JOptionPane.showMessageDialog(VentanaModificarHardware.this,
+              "Los datos del hardware son inválidos o estaban vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+      this.limpiaCampos();
+      regresaVentana();
+      break;
+
+    case 3:
+      JOptionPane.showMessageDialog(VentanaModificarHardware.this,
+              "No se ha podido ingresar el hardware", "Advertencia", JOptionPane.ERROR_MESSAGE);
+      this.limpiaCampos();
+      regresaVentana();
+      break;
+      
+      case 4:
+      JOptionPane.showMessageDialog(this.ventanaCrudHardware,
+              "No se ha podido recuperar la información del hardware", "Advertencia", JOptionPane.WARNING_MESSAGE);
+      regresaVentana();
+      break;
+
+    default:
+      break;
+    }
+  }
+     
+     private boolean actualizaHardware(Hardware hardwarePorAñadir) {
+    if (VentanaModificarHardware.this.inventarioHardware.actualizaHardware(hardwarePorAñadir)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+    
+  private boolean asignaValores(){
+    Hardware hardware = VentanaModificarHardware.this.inventarioHardware.buscaHardware(identificadorFila);
+    if (hardware!= null) {
+    this.jTextFieldNumeroSerie.setText(hardware.getNumeroSerie());
+    this.jTextFieldMarca.setText(hardware.getMarca());
+    this.jTextFieldModelo.setText(hardware.getModelo());
+    this.jComboBoxPartes.setSelectedItem(hardware.getPartesdispositivo());
+    this.jComboBoxTipo.setSelectedItem(hardware.getTipoDispositivo());
+    this.jComboBoxUbicacion.setSelectedItem(hardware.getUbicacion());
+    return true;
+    }
+    return false;
+  }
+  
+  private Hardware obtieneValoresTextBox(){
+    Hardware hardware = new Hardware();
+    hardware.setNumeroInventario(identificadorFila);
+    hardware.setNumeroSerie(this.jTextFieldNumeroSerie.getText());
+    hardware.setMarca(this.jTextFieldMarca.getText());
+    hardware.setModelo(this.jTextFieldModelo.getText());
+    hardware.setTipoDispositivo(this.jComboBoxTipo.getSelectedItem().toString());
+    hardware.setPartesdispositivo(this.jComboBoxPartes.getSelectedItem().toString());
+    hardware.setUbicacion(this.jComboBoxUbicacion.getSelectedItem().toString());
+    return hardware;
+  }
+  
+  private ArrayList<JTextField> regresaListaTextBox(){
+     ArrayList<JTextField> textFields = new ArrayList<>();
+            textFields.add(jTextFieldNumeroSerie);
+            textFields.add(jTextFieldMarca);
+            textFields.add(jTextFieldModelo);
+            return textFields;
+  }
+  
+  private boolean listaTextBoxEsValida(ArrayList<JTextField> textFields) {
+    for (JTextField textbox : textFields) {
+            if (textbox.getText().trim().isEmpty() || 
+                    textbox.getText().toString().length() > NUMEROMAXIMOACEPTADO) {
+                return false;  
+            }
+        }
+    return true;
+  }
+ 
+  private void limpiaCampos() {
+    for (JTextField textbox : this.textFields) {
+      textbox.setText("");
+    }
+  }
+  
+  private boolean validaFechaIngresada(){
+    if (this.dateChooserComboFechaAadquisicion.getDate()== null){
+      return false;
+    }
+    return true;
   }
 
+
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private datechooser.beans.DateChooserCombo dateChooserCombo2;
+  private com.toedter.calendar.JDateChooser dateChooserComboFechaAadquisicion;
   private javax.swing.JButton jButtonGuardar;
-  private javax.swing.JComboBox<String> jComboBoxEstado;
-  private javax.swing.JComboBox<String> jComboBoxResponsable;
+  private javax.swing.JComboBox<String> jComboBoxPartes;
   private javax.swing.JComboBox<String> jComboBoxTipo;
-  private javax.swing.JLabel jLabelEstado;
+  private javax.swing.JComboBox<String> jComboBoxUbicacion;
   private javax.swing.JLabel jLabelEtiquetaModificarHardware;
   private javax.swing.JLabel jLabelEtiquetaRegresar1;
   private javax.swing.JLabel jLabelFecha;
   private javax.swing.JLabel jLabelMarca;
   private javax.swing.JLabel jLabelModelo;
-  private javax.swing.JLabel jLabelNumeroInventario;
   private javax.swing.JLabel jLabelNumeroSerie;
   private javax.swing.JLabel jLabelPartes;
   private javax.swing.JLabel jLabelRegresar1;
-  private javax.swing.JLabel jLabelResponsable;
   private javax.swing.JLabel jLabelTipo;
   private javax.swing.JLabel jLabelTipo2;
   private javax.swing.JLabel jLabelUbicacion;
   private javax.swing.JPanel jPanelAñadir;
   private javax.swing.JTextField jTextFieldMarca;
   private javax.swing.JTextField jTextFieldModelo;
-  private javax.swing.JTextField jTextFieldNumeroInventario;
   private javax.swing.JTextField jTextFieldNumeroSerie;
-  private javax.swing.JTextField jTextFieldPartes;
-  private javax.swing.JTextField jTextFieldUbicacion;
   // End of variables declaration//GEN-END:variables
 }

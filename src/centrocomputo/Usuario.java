@@ -16,9 +16,7 @@ public class Usuario {
 
   public Usuario() {
   }
-  
-  
-  		
+
   public Usuario(String identificador, String nombres, String apellido,
           String correoInstitucional, String contrasenia,
           String telefonoConExtension) {

@@ -22,6 +22,6 @@ public interface AccesoDatosHardwareInterface {
   
   public boolean actualizaHardwareRepositorio (Hardware hardware);
   
-  public Hardware buscaHardwareBd(String idHardware);
+  public Hardware buscaHardwareRepositorio (String idHardware);
   
 }

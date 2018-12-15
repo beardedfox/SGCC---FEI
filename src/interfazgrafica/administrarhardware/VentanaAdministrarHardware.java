@@ -5,8 +5,15 @@
  */
 package interfazgrafica.administrarhardware;
 
+import CentroComputo.*;
 import centrocomputo.interfaz.*;
+import centrocomputo.inventario.*;
 import interfazgrafica.menujefecentrocomputo.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
+import repositorio.dataaccesobject.*;
+import repositorio.interfaz.*;
 
 /**
  *
@@ -14,8 +21,13 @@ import interfazgrafica.menujefecentrocomputo.*;
  */
 public class VentanaAdministrarHardware extends javax.swing.JFrame {
 
+  String identificadorFila = null;
   InventarioHardwareInterface inventarioHardware;
   VentanaMenuJefeCentroComputo ventanaMenu = null;
+  private static VentanaAdministrarHardware ventanaCrudHardware = null;
+   private static final int HARDWARENOSELECCIONADO = 1;
+  private static final int HARDWAREDESHABILITADO = 2;
+  private static final int PROCESONOTERMINADO = 3;
   String rolNecesario = "JCC";
 
   /**
@@ -25,6 +37,13 @@ public class VentanaAdministrarHardware extends javax.swing.JFrame {
     this.inventarioHardware = inventarioHardware;
     this.ventanaMenu = ventanaMenu;
     initComponents();
+    if (asignaTabla() == true) {
+      alistarModelo();
+    }
+  }
+  
+  public String getIdentificadorFila() {
+    return identificadorFila;
   }
 
   /**
@@ -43,13 +62,18 @@ public class VentanaAdministrarHardware extends javax.swing.JFrame {
     jLabelEtiquetaAdministrarHardware = new javax.swing.JLabel();
     jLabelLogoCc = new javax.swing.JLabel();
     jScrollPanelAdministrarHardware = new javax.swing.JScrollPane();
-    jTableHardaware = new javax.swing.JTable();
+    jTableHardware = new javax.swing.JTable();
     jLabelAñadir = new javax.swing.JLabel();
     jLabelVer = new javax.swing.JLabel();
     jLabelEditar = new javax.swing.JLabel();
     jLabelEliminar = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    addComponentListener(new java.awt.event.ComponentAdapter() {
+      public void componentShown(java.awt.event.ComponentEvent evt) {
+        formComponentShown(evt);
+      }
+    });
     getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
     jPanelMenu.setBackground(new java.awt.Color(255, 255, 255));
@@ -74,31 +98,51 @@ public class VentanaAdministrarHardware extends javax.swing.JFrame {
     jLabelLogoCc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelLogoPequeñoCc.png"))); // NOI18N
     jPanelMenu.add(jLabelLogoCc, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, -1, -1));
 
-    jTableHardaware.setModel(new javax.swing.table.DefaultTableModel(
+    jTableHardware.setModel(new javax.swing.table.DefaultTableModel(
       new Object [][] {
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null},
-        {null, null, null, null}
+        {},
+        {},
+        {},
+        {}
       },
       new String [] {
-        "Title 1", "Title 2", "Title 3", "Title 4"
+
       }
     ));
-    jScrollPanelAdministrarHardware.setViewportView(jTableHardaware);
+    jScrollPanelAdministrarHardware.setViewportView(jTableHardware);
 
     jPanelMenu.add(jScrollPanelAdministrarHardware, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 470, 260));
 
     jLabelAñadir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelAñadir.png"))); // NOI18N
+    jLabelAñadir.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelAñadirMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelAñadir, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, -1, -1));
 
     jLabelVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelVerMas.png"))); // NOI18N
+    jLabelVer.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelVerMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, -1, -1));
 
     jLabelEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelEditar.png"))); // NOI18N
+    jLabelEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelEditarMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, -1, -1));
 
     jLabelEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelCerrar.png"))); // NOI18N
+    jLabelEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelEliminarMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 60, -1, -1));
 
     getContentPane().add(jPanelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 390));
@@ -112,6 +156,145 @@ public class VentanaAdministrarHardware extends javax.swing.JFrame {
     this.ventanaMenu.setVisible(true);
   }//GEN-LAST:event_jLabelRegresarMouseClicked
 
+  private void jLabelAñadirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelAñadirMouseClicked
+    creaPantallaAñadirHardware();
+  }//GEN-LAST:event_jLabelAñadirMouseClicked
+
+  private void jLabelVerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelVerMouseClicked
+    seleccionHardware();
+    if (identificadorFila != null) {
+    creaPantallaVisualizar();
+    }
+  }//GEN-LAST:event_jLabelVerMouseClicked
+
+  private void jLabelEditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelEditarMouseClicked
+    seleccionHardware();
+    if (identificadorFila != null) {
+      creaPantallaModificar();
+    }
+  }//GEN-LAST:event_jLabelEditarMouseClicked
+
+  private void jLabelEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelEliminarMouseClicked
+    seleccionHardware();
+    if (identificadorFila != null) {
+      int respuesta = JOptionPane.showConfirmDialog(VentanaAdministrarHardware.this, 
+              "Deseas deshabilitar al hardware seleccionado?", "Deshabilitar hardware",
+              JOptionPane.INFORMATION_MESSAGE);
+    if (respuesta == JOptionPane.YES_OPTION) {
+      if (VentanaAdministrarHardware.this.inventarioHardware.eliminaHardware(identificadorFila)) {
+        despliegaAviso(HARDWAREDESHABILITADO);
+      } else {
+        despliegaAviso(PROCESONOTERMINADO);
+      }
+    }
+    }
+  }//GEN-LAST:event_jLabelEliminarMouseClicked
+
+  private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+    actualizaLista();
+  }//GEN-LAST:event_formComponentShown
+
+  private void seleccionHardware() {
+    try {
+      identificadorFila = (String) jTableHardware.getModel().getValueAt(jTableHardware.getSelectedRow(), 0);
+    } catch (ArrayIndexOutOfBoundsException Exception) {
+      despliegaAviso(HARDWARENOSELECCIONADO);
+    }
+  }
+  
+  private void despliegaAviso(int tipoAdvertencia) {
+
+    switch (tipoAdvertencia) {
+    case 1:
+      JOptionPane.showMessageDialog(VentanaAdministrarHardware.this,
+              "No haz seleccionado un hardware", "Advertencia", JOptionPane.ERROR_MESSAGE);
+      break;
+      
+      case 2:
+      JOptionPane.showMessageDialog(VentanaAdministrarHardware.this,
+              "Hardware ha sido deshabilitado", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+      break;
+      
+      case 3:
+      JOptionPane.showMessageDialog(VentanaAdministrarHardware.this,
+              "Proceso no pudo ser terminado", "Advertencia", JOptionPane.ERROR_MESSAGE);
+      break;
+
+    default:
+      break;
+    }
+  }
+  
+   private void creaPantallaAñadirHardware() {
+     AccesoDatosHardwareInterface repositorioHardware = new AccesoDatosHardware();
+    InventarioHardwareInterface inventarioHardware = InventarioHardware.obtieneInstancia(repositorioHardware);
+    VentanaAñadirHardware ventanaAgregarHardware = new VentanaAñadirHardware(this, inventarioHardware);
+    ventanaAgregarHardware.setLocationRelativeTo(null);
+    this.setVisible(false);
+    ventanaAgregarHardware.setVisible(true);
+  }
+
+  private void creaPantallaModificar() {
+    AccesoDatosHardwareInterface repositorioHardware = new AccesoDatosHardware();
+    InventarioHardwareInterface inventarioHardware = InventarioHardware.obtieneInstancia(repositorioHardware);
+    VentanaModificarHardware ventanaModificarHardware = new VentanaModificarHardware(this, inventarioHardware);
+    ventanaModificarHardware.setLocationRelativeTo(null);
+    this.setVisible(false);
+    ventanaModificarHardware.setVisible(true);
+    
+  }
+  
+  private void creaPantallaVisualizar() {
+    AccesoDatosHardwareInterface repositorioHardware = new AccesoDatosHardware();
+    InventarioHardwareInterface inventarioHardware = InventarioHardware.obtieneInstancia(repositorioHardware);
+    VentanaVisualizarHardware ventanaVisualizarHardware = new VentanaVisualizarHardware(this, inventarioHardware);
+    ventanaVisualizarHardware.setLocationRelativeTo(null);
+    this.setVisible(false);
+    ventanaVisualizarHardware.setVisible(true);
+  }
+  
+  private DefaultTableModel llenaModelo() {
+        DefaultTableModel modelUsuarios = new DefaultTableModel(
+        new Object[][] {}, new String[] {"Numero de inventario ", "Marca",
+          "Modelo", "Ubicacion"});
+    List<Hardware> listaHardware = 
+            VentanaAdministrarHardware.this.inventarioHardware.regresaListaHardware();
+        if (listaHardware == null || listaHardware.isEmpty()) {
+         return null; 
+        }
+        for (Hardware hardware : listaHardware) {
+          String numeroinventario = hardware.getNumeroInventario();
+          String marca = hardware.getMarca();
+          String modelo = hardware.getModelo();
+          String ubicacion = hardware.getUbicacion();
+          modelUsuarios.addRow(new String[]{numeroinventario, marca, modelo, ubicacion});
+      }
+        return modelUsuarios;
+  }
+  
+  private boolean asignaTabla() {
+    DefaultTableModel modeloHardware = VentanaAdministrarHardware.this.llenaModelo();
+    if (modeloHardware == null) {
+      return false;
+    } else {
+      jTableHardware.setModel(modeloHardware);
+      return true;
+    }
+  }
+  
+  private void actualizaLista(){
+   if (asignaTabla() == true) {
+      alistarModelo();
+      identificadorFila = null;
+    }
+   identificadorFila = null;
+  }
+  
+  private void alistarModelo(){
+    jTableHardware.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    jTableHardware.setDefaultEditor(Object.class, null);
+  }
+  
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JLabel jLabelAñadir;
@@ -124,6 +307,6 @@ public class VentanaAdministrarHardware extends javax.swing.JFrame {
   private javax.swing.JLabel jLabelVer;
   private javax.swing.JPanel jPanelMenu;
   private javax.swing.JScrollPane jScrollPanelAdministrarHardware;
-  private javax.swing.JTable jTableHardaware;
+  private javax.swing.JTable jTableHardware;
   // End of variables declaration//GEN-END:variables
 }

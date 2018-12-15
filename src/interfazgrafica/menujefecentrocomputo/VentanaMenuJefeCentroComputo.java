@@ -155,6 +155,8 @@ public class VentanaMenuJefeCentroComputo extends javax.swing.JFrame {
   }
   
   private void despliegaVentanaAdministrarHardware(){
+    AccesoDatosHardwareInterface repositorioHardware = new AccesoDatosHardware();
+    InventarioHardwareInterface inventarioHardware = InventarioHardware.obtieneInstancia(repositorioHardware);
     VentanaAdministrarHardware ventanaHardware 
             = new VentanaAdministrarHardware(this, inventarioHardware);
     ventanaHardware.setLocationRelativeTo(null);
@@ -163,6 +165,8 @@ public class VentanaMenuJefeCentroComputo extends javax.swing.JFrame {
   }
   
   private void despliegaVentanaAdministrarResponsables(){
+    AccesoDatosResponsableInterface repositorioResponsable = new AccesoDatosResponsable();
+    InventarioResponsableInterface inventarioResponsable = InventarioResponsable.obtieneInstancia(repositorioResponsable);
     VentanaAdministrarResponsables ventanaResponsables 
             = new VentanaAdministrarResponsables(this, inventarioResponsable);
     ventanaResponsables.setLocationRelativeTo(null);

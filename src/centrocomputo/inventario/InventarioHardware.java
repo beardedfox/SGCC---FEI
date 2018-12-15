@@ -33,27 +33,46 @@ public class InventarioHardware implements InventarioHardwareInterface {
 
   @Override
   public boolean actualizaHardware(Hardware hardware) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    if (this.repositorioHardware.actualizaHardwareRepositorio(hardware)) {
+      return true;
+    }
+    return false;
   }
 
   @Override
   public Hardware buscaHardware(String idHardware) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Hardware hardwareEncontrado = this.repositorioHardware.buscaHardwareRepositorio(idHardware);
+    if (hardwareEncontrado == null) {
+      return null;
+    } else {
+      return hardwareEncontrado;
+    }
   }
 
   @Override
   public boolean eliminaHardware(String idHardware) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     if (this.repositorioHardware.eliminaHardwareRepositorio(idHardware)) {
+      return true;
+    }
+    return false;
   }
 
   @Override
   public boolean guardaHardware(Hardware hardware) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    if (this.repositorioHardware.guardaHardwareRepositorio(hardware)) {
+      return true;
+    }
+    return false;
   }
 
   @Override
   public List<Hardware> regresaListaHardware() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    this.listaHardware = this.repositorioHardware.regresaListaHardwareRepositorio();
+    if (this.listaHardware == null || this.listaHardware.isEmpty()) {
+      return null;
+    } else {
+    return this.listaHardware;
+    }
   }
   
 }

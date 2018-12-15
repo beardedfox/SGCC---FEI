@@ -5,19 +5,63 @@
  */
 package interfazgrafica.administrarhardware;
 
+import CentroComputo.*;
+import centrocomputo.interfaz.*;
+import java.text.*;
+import javax.swing.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaVisualizarHardware extends javax.swing.JFrame {
   
+  InventarioHardwareInterface inventarioHardware;
+  VentanaAdministrarHardware ventanaCrudHardware = null;
+  private String identificadorFila = null;
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaVisualizarHardware
    */
-  public VentanaVisualizarHardware() {
-    initComponents();
+   VentanaVisualizarHardware(VentanaAdministrarHardware ventanaCrudHardware, InventarioHardwareInterface inventarioHardware) {
+    this.inventarioHardware = inventarioHardware;
+    this.ventanaCrudHardware = ventanaCrudHardware;
+    identificadorFila = ventanaCrudHardware.getIdentificadorFila();
+     initComponents();
+     despliegaHardware();
+  }
+
+  public void setjLabelVisualizarAdquisicion(String fechaAdquisicion) {
+    this.jLabelVisualizarAdquisicion.setText(fechaAdquisicion);
+  }
+
+  public void setjLabelVisualizarMarca(String marca) {
+    this.jLabelVisualizarMarca.setText(marca);
+  }
+
+  public void setjLabelVisualizarModelo(String modelo) {
+    this.jLabelVisualizarModelo.setText(modelo);
+  }
+
+  public void setjLabelVisualizarNumeroInventario(String numeroInventario) {
+    this.jLabelVisualizarNumeroInventario.setText(numeroInventario);
+  }
+
+  public void setjLabelVisualizarNumeroSerie(String numeroSerie) {
+    this.jLabelVisualizarNumeroSerie.setText(numeroSerie);
+  }
+
+  public void setjLabelVisualizarPartes(String partes) {
+    this.jLabelVisualizarPartes.setText(partes);
+  }
+
+  public void setjLabelVisualizarTipo(String tipo) {
+    this.jLabelVisualizarTipo.setText(tipo);
+  }
+
+  public void setjLabelVisualizarUbicacion(String ubicacion) {
+    this.jLabelVisualizarUbicacion.setText(ubicacion);
   }
 
   /**
@@ -36,24 +80,20 @@ public class VentanaVisualizarHardware extends javax.swing.JFrame {
     jLabelEtiquetaVisualizarHardware = new javax.swing.JLabel();
     jLabelNumeroInventario = new javax.swing.JLabel();
     jLabelMarca = new javax.swing.JLabel();
-    jLabelResponsable = new javax.swing.JLabel();
     jLabelTipo = new javax.swing.JLabel();
     jLabelFecha = new javax.swing.JLabel();
     jLabelTipo2 = new javax.swing.JLabel();
     jLabelModelo = new javax.swing.JLabel();
     jLabelNumeroSerie = new javax.swing.JLabel();
     jLabelUbicacion = new javax.swing.JLabel();
-    jLabelEstado = new javax.swing.JLabel();
     jLabelPartes = new javax.swing.JLabel();
-    jLabelVisualizarEntrada = new javax.swing.JLabel();
+    jLabelVisualizarNumeroInventario = new javax.swing.JLabel();
     jLabelVisualizarMarca = new javax.swing.JLabel();
-    jLabelVisualizarResponsable = new javax.swing.JLabel();
     jLabelVisualizarTipo = new javax.swing.JLabel();
     jLabelVisualizarAdquisicion = new javax.swing.JLabel();
     jLabelVisualizarModelo = new javax.swing.JLabel();
     jLabelVisualizarNumeroSerie = new javax.swing.JLabel();
     jLabelVisualizarUbicacion = new javax.swing.JLabel();
-    jLabelVisualizarEstado = new javax.swing.JLabel();
     jLabelVisualizarPartes = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -61,6 +101,11 @@ public class VentanaVisualizarHardware extends javax.swing.JFrame {
     jPanelVisualizarr.setBackground(new java.awt.Color(255, 255, 255));
 
     jLabelRegresar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar1.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresar1MouseClicked(evt);
+      }
+    });
 
     jLabelEtiquetaRegresar1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
     jLabelEtiquetaRegresar1.setText("Regresar");
@@ -72,8 +117,6 @@ public class VentanaVisualizarHardware extends javax.swing.JFrame {
 
     jLabelMarca.setText("Marca:");
 
-    jLabelResponsable.setText("Responsable:");
-
     jLabelTipo.setText("Tipo:");
 
     jLabelFecha.setText("Fecha Adquisición:");
@@ -84,15 +127,11 @@ public class VentanaVisualizarHardware extends javax.swing.JFrame {
 
     jLabelUbicacion.setText("Ubicacion:");
 
-    jLabelEstado.setText("Estado:");
-
     jLabelPartes.setText("Partes:");
 
-    jLabelVisualizarEntrada.setText("EntradaInventario");
+    jLabelVisualizarNumeroInventario.setText("EntradaInventario");
 
     jLabelVisualizarMarca.setText("EntradaMarca");
-
-    jLabelVisualizarResponsable.setText("EntradaResponsable");
 
     jLabelVisualizarTipo.setText("EntradaTipo");
 
@@ -103,8 +142,6 @@ public class VentanaVisualizarHardware extends javax.swing.JFrame {
     jLabelVisualizarNumeroSerie.setText("EntradaNumeroSerie");
 
     jLabelVisualizarUbicacion.setText("EntradaUbicacion");
-
-    jLabelVisualizarEstado.setText("EntradaEstado");
 
     jLabelVisualizarPartes.setText("EntradaPartes");
 
@@ -117,39 +154,29 @@ public class VentanaVisualizarHardware extends javax.swing.JFrame {
         .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jLabelTipo)
-            .addComponent(jLabelResponsable)
             .addComponent(jLabelMarca)
             .addComponent(jLabelFecha, javax.swing.GroupLayout.Alignment.LEADING))
           .addComponent(jLabelNumeroInventario, javax.swing.GroupLayout.Alignment.TRAILING))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-          .addComponent(jLabelVisualizarTipo)
-          .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelVisualizarrLayout.createSequentialGroup()
-            .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-              .addComponent(jLabelVisualizarAdquisicion, javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabelVisualizarResponsable, javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabelVisualizarMarca, javax.swing.GroupLayout.Alignment.LEADING)
-              .addComponent(jLabelVisualizarEntrada, javax.swing.GroupLayout.Alignment.LEADING))
-            .addGap(0, 0, Short.MAX_VALUE)))
-        .addGap(42, 42, 42)
-        .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-          .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+        .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jLabelVisualizarAdquisicion)
+          .addComponent(jLabelVisualizarMarca)
+          .addComponent(jLabelVisualizarNumeroInventario)
+          .addComponent(jLabelVisualizarTipo))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+        .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jLabelUbicacion, javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelVisualizarrLayout.createSequentialGroup()
-              .addGap(12, 12, 12)
-              .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                .addComponent(jLabelPartes, javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabelEstado))))
-          .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelVisualizarrLayout.createSequentialGroup()
-            .addGap(2, 2, 2)
-            .addComponent(jLabelNumeroSerie))
-          .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelVisualizarrLayout.createSequentialGroup()
-            .addGap(11, 11, 11)
-            .addComponent(jLabelModelo)))
-        .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelVisualizarrLayout.createSequentialGroup()
+              .addGap(2, 2, 2)
+              .addComponent(jLabelNumeroSerie))
+            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelVisualizarrLayout.createSequentialGroup()
+              .addGap(11, 11, 11)
+              .addComponent(jLabelModelo)))
+          .addComponent(jLabelPartes, javax.swing.GroupLayout.Alignment.TRAILING))
+        .addGap(0, 21, Short.MAX_VALUE)
         .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addComponent(jLabelVisualizarUbicacion)
-          .addComponent(jLabelVisualizarEstado)
           .addComponent(jLabelVisualizarPartes)
           .addComponent(jLabelVisualizarModelo)
           .addComponent(jLabelVisualizarNumeroSerie))
@@ -180,7 +207,7 @@ public class VentanaVisualizarHardware extends javax.swing.JFrame {
         .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabelNumeroInventario)
           .addComponent(jLabelModelo)
-          .addComponent(jLabelVisualizarEntrada)
+          .addComponent(jLabelVisualizarNumeroInventario)
           .addComponent(jLabelVisualizarModelo))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,90 +220,75 @@ public class VentanaVisualizarHardware extends javax.swing.JFrame {
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabelUbicacion)
-          .addComponent(jLabelResponsable)
-          .addComponent(jLabelVisualizarResponsable)
-          .addComponent(jLabelVisualizarUbicacion))
-        .addGap(19, 19, 19)
+          .addComponent(jLabelVisualizarUbicacion)
+          .addComponent(jLabelFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+          .addComponent(jLabelVisualizarAdquisicion))
+        .addGap(16, 16, 16)
         .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
           .addComponent(jLabelTipo)
-          .addComponent(jLabelEstado)
           .addComponent(jLabelVisualizarTipo)
-          .addComponent(jLabelVisualizarEstado))
-        .addGap(18, 18, 18)
-        .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-            .addComponent(jLabelPartes, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jLabelVisualizarPartes))
-          .addGroup(jPanelVisualizarrLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-            .addComponent(jLabelFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabelVisualizarAdquisicion)))
-        .addGap(40, 40, 40)
+          .addComponent(jLabelPartes, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabelVisualizarPartes))
+        .addGap(69, 69, 69)
         .addComponent(jLabelTipo2)
-        .addGap(31, 31, 31))
+        .addContainerGap())
     );
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 514, Short.MAX_VALUE)
+      .addGap(0, 536, Short.MAX_VALUE)
       .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jPanelVisualizarr, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addComponent(jPanelVisualizarr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGap(0, 296, Short.MAX_VALUE)
+      .addGap(0, 247, Short.MAX_VALUE)
       .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(jPanelVisualizarr, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addComponent(jPanelVisualizarr, javax.swing.GroupLayout.PREFERRED_SIZE, 247, Short.MAX_VALUE))
     );
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /*
-     * Set the Nimbus look and feel
-     */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /*
-     * If Nimbus (introduced in Java SE 6) is not available, stay with the
-     * default look and feel.
-     * For details see
-     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarHardware.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarHardware.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarHardware.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarHardware.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
+  private void jLabelRegresar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresar1MouseClicked
+    regresaVentana();
+  }//GEN-LAST:event_jLabelRegresar1MouseClicked
 
-    /*
-     * Create and display the form
-     */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new VentanaVisualizarHardware().setVisible(true);
-      }
-    });
+  
+  private void regresaVentana() {
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaCrudHardware.setVisible(true);
   }
-
+   
+  private void despliegaHardware() {
+    if (!recuperaHardware()) {
+      JOptionPane.showMessageDialog(VentanaVisualizarHardware.this,
+              "No se ha podido recuperar la información del hardware ", "Advertencia", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+    
+  private boolean recuperaHardware() {
+     SimpleDateFormat formatoFecha = new SimpleDateFormat("yyyy/MM/dd");
+    Hardware hardware = VentanaVisualizarHardware.this.inventarioHardware.buscaHardware(identificadorFila);
+    if (hardware != null|| hardware.getFechaAdquisicion()!=null) {
+      String fechaComoCadena = formatoFecha.format(hardware.getFechaAdquisicion());
+      this.setjLabelVisualizarAdquisicion(fechaComoCadena);
+      this.setjLabelVisualizarMarca(hardware.getMarca());
+      this.setjLabelVisualizarModelo(hardware.getModelo());
+      this.setjLabelVisualizarNumeroInventario(hardware.getNumeroInventario());
+      this.setjLabelVisualizarNumeroSerie(hardware.getNumeroSerie());
+      this.setjLabelVisualizarPartes(hardware.getPartesdispositivo());
+      this.setjLabelVisualizarTipo(hardware.getTipoDispositivo());
+      this.setjLabelVisualizarUbicacion(hardware.getUbicacion());
+      return true;
+    }
+    return false;
+  }
+ 
   // Variables declaration - do not modify//GEN-BEGIN:variables
-  private javax.swing.JLabel jLabelEstado;
   private javax.swing.JLabel jLabelEtiquetaRegresar1;
   private javax.swing.JLabel jLabelEtiquetaVisualizarHardware;
   private javax.swing.JLabel jLabelFecha;
@@ -286,18 +298,15 @@ public class VentanaVisualizarHardware extends javax.swing.JFrame {
   private javax.swing.JLabel jLabelNumeroSerie;
   private javax.swing.JLabel jLabelPartes;
   private javax.swing.JLabel jLabelRegresar1;
-  private javax.swing.JLabel jLabelResponsable;
   private javax.swing.JLabel jLabelTipo;
   private javax.swing.JLabel jLabelTipo2;
   private javax.swing.JLabel jLabelUbicacion;
   private javax.swing.JLabel jLabelVisualizarAdquisicion;
-  private javax.swing.JLabel jLabelVisualizarEntrada;
-  private javax.swing.JLabel jLabelVisualizarEstado;
   private javax.swing.JLabel jLabelVisualizarMarca;
   private javax.swing.JLabel jLabelVisualizarModelo;
+  private javax.swing.JLabel jLabelVisualizarNumeroInventario;
   private javax.swing.JLabel jLabelVisualizarNumeroSerie;
   private javax.swing.JLabel jLabelVisualizarPartes;
-  private javax.swing.JLabel jLabelVisualizarResponsable;
   private javax.swing.JLabel jLabelVisualizarTipo;
   private javax.swing.JLabel jLabelVisualizarUbicacion;
   private javax.swing.JPanel jPanelVisualizarr;

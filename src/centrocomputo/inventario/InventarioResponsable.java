@@ -15,44 +15,64 @@ import repositorio.interfaz.AccesoDatosResponsableInterface;
  * @author Alberto Sánchez
  */
 public class InventarioResponsable implements InventarioResponsableInterface {
-  
- private AccesoDatosResponsableInterface repositorioResponsable;
- private static InventarioResponsable inventarioResponsable = null;
- private List<Responsable> listaResponsable;
- 
-  private InventarioResponsable(AccesoDatosResponsableInterface repositorioResponsable){
+
+  private AccesoDatosResponsableInterface repositorioResponsable;
+  private static InventarioResponsable inventarioResponsable = null;
+  private List<Responsable> listaResponsable;
+
+  private InventarioResponsable(AccesoDatosResponsableInterface repositorioResponsable) {
     this.repositorioResponsable = repositorioResponsable;
   }
-  
-  public static InventarioResponsable obtieneInstancia(AccesoDatosResponsableInterface repositorioResponsable){
+
+  public static InventarioResponsable obtieneInstancia(AccesoDatosResponsableInterface repositorioResponsable) {
     if (InventarioResponsable.inventarioResponsable == null) {
       InventarioResponsable.inventarioResponsable = new InventarioResponsable(repositorioResponsable);
     }
-    return InventarioResponsable.inventarioResponsable;    
+    return InventarioResponsable.inventarioResponsable;
   }
 
   @Override
   public boolean actualizaResponsable(Responsable responsable) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    if (this.repositorioResponsable.actualizaResponsableRepositorio(responsable)) {
+      return true;
+    }
+    return false;
   }
 
   @Override
   public Responsable buscaResponsable(String idResponsable) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Responsable responsableEncontrado
+            = this.repositorioResponsable.buscaResponsableRepositorio(idResponsable);
+    if (responsableEncontrado == null) {
+      return null;
+    } else {
+      return responsableEncontrado;
+    }
   }
 
   @Override
   public boolean eliminaResponsable(String idResponsable) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    if (this.repositorioResponsable.eliminaResponsableRepositorio(idResponsable)) {
+      return true;
+    }
+    return false;
   }
 
   @Override
   public boolean guardaResponsable(Responsable responsable) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    if (this.repositorioResponsable.guardaResponsableRepositorio(responsable)) {
+      return true;
+    }
+    return false;
   }
 
   @Override
   public List<Responsable> regresaListaResponsable() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-  }  
+    this.listaResponsable = this.repositorioResponsable.regresaListaResponsableRepositorio();
+    if (this.listaResponsable == null || this.listaResponsable.isEmpty()) {
+      return null;
+    } else {
+      return this.listaResponsable;
+    }
+  }
 }

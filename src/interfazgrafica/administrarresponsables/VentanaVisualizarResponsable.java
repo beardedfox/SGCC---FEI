@@ -5,6 +5,8 @@
  */
 package interfazgrafica.administrarresponsables;
 
+import centrocomputo.interfaz.*;
+
 /**
  *
  * @author Alberto Sánchez
@@ -18,6 +20,10 @@ public class VentanaVisualizarResponsable extends javax.swing.JFrame {
    */
   public VentanaVisualizarResponsable() {
     initComponents();
+  }
+
+  VentanaVisualizarResponsable(VentanaAdministrarResponsables ventanaCrudResponsables, InventarioResponsableInterface inventarioResponsable) {
+    
   }
 
   /**

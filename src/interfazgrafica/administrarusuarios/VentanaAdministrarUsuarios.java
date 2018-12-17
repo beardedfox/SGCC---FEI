@@ -1,4 +1,4 @@
-/*
+  /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -229,8 +229,8 @@ public class VentanaAdministrarUsuarios extends javax.swing.JFrame {
   }
   
   private void creaPantallaAñadirUsuario() {
-    AccesoDatosUsuarioInterface repositorioUsuario = new AccesoDatosUsuario();
-    InventarioUsuarioInterface inventarioUsuario = InventarioUsuario.obtieneInstancia(repositorioUsuario);
+    AccesoDatosResponsableInterface repositorioResponsable = new AccesoDatosResponsable();
+    InventarioResponsableInterface inventarioResponsable = InventarioResponsable.obtieneInstancia(repositorioResponsable);
     VentanaAñadirUsuario ventanaAgregarUsuarios = new VentanaAñadirUsuario(this, inventarioUsuario);
     ventanaAgregarUsuarios.setLocationRelativeTo(null);
     this.setVisible(false);

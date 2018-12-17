@@ -5,18 +5,35 @@
  */
 package interfazgrafica.administrarresponsables;
 
+import CentroComputo.*;
+import centrocomputo.interfaz.*;
+import interfazgrafica.administrarusuarios.*;
+import java.util.*;
+import javax.swing.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaAñadirResponsable extends javax.swing.JFrame {
   
+  private static final int NUMEROMAXIMOACEPTADO = 25;
+  private static final int INGRESOSATISFACTORIO = 1;
+  private static final int DATOSINVALIDOS = 2;
+  private static final int INGRESOINVALIDO = 3;
+  InventarioResponsableInterface inventarioResponsable;
+  VentanaAdministrarResponsables ventanaCrudResponsables = null;
+  private static VentanaAñadirResponsable ventanaAgregar = null;
+  ArrayList<JTextField> textFields = new ArrayList<>();
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaAñadirResponsable
    */
-  public VentanaAñadirResponsable() {
+  public VentanaAñadirResponsable(VentanaAdministrarResponsables ventanaCrudResponsables, InventarioResponsableInterface inventarioResponsable) {
+    this.inventarioResponsable = inventarioResponsable;
+    this.ventanaAgregar = ventanaAgregar;
+    this.ventanaCrudResponsables = ventanaCrudResponsables;
     initComponents();
   }
 
@@ -55,16 +72,15 @@ public class VentanaAñadirResponsable extends javax.swing.JFrame {
     jLabelEtiquetaRegresar.setText("Regresar");
 
     jLabelRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresarMouseClicked(evt);
+      }
+    });
 
     jLabelNombre.setText("Nombre(s):");
 
     jLabelNumeroPersonal.setText("No. personal:");
-
-    jTextFieldNumeroPersonal.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jTextFieldNumeroPersonalActionPerformed(evt);
-      }
-    });
 
     jLabelTelefono.setText("Telefono:");
 
@@ -157,54 +173,96 @@ public class VentanaAñadirResponsable extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  private void jTextFieldNumeroPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNumeroPersonalActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jTextFieldNumeroPersonalActionPerformed
-
   private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
-    // TODO add your handling code here:
+    this.textFields = this.regresaListaTextBox();
+    if (!listaTextBoxEsValida(textFields)) {
+      despliegaAviso(DATOSINVALIDOS);
+    } else {
+      if (añadeResponsable(obtieneValoresTextBox())) {
+        despliegaAviso(INGRESOSATISFACTORIO);
+      } else {
+        despliegaAviso(INGRESOINVALIDO);
+      }
+    }
   }//GEN-LAST:event_jButtonGuardarActionPerformed
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /*
-     * Set the Nimbus look and feel
-     */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /*
-     * If Nimbus (introduced in Java SE 6) is not available, stay with the
-     * default look and feel.
-     * For details see
-     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(VentanaAñadirResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(VentanaAñadirResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(VentanaAñadirResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(VentanaAñadirResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
+  private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
+    regresaVentana();
+  }//GEN-LAST:event_jLabelRegresarMouseClicked
 
-    /*
-     * Create and display the form
-     */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new VentanaAñadirResponsable().setVisible(true);
-      }
-    });
+  private void despliegaAviso(int tipoAdvertencia) {
+
+    switch (tipoAdvertencia) {
+    case 1:
+      JOptionPane.showMessageDialog(VentanaAñadirResponsable.this,
+              "EL responsable ha sido agregado satisfactoriamente", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+      this.limpiaCampos();
+      break;
+
+    case 2:
+      JOptionPane.showMessageDialog(VentanaAñadirResponsable.this,
+              "Los datos del responsable son inválidos o estaban vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+      this.limpiaCampos();
+      break;
+
+    case 3:
+      JOptionPane.showMessageDialog(VentanaAñadirResponsable.this,
+              "No se ha podido ingresar el usuario", "Advertencia", JOptionPane.ERROR_MESSAGE);
+      this.limpiaCampos();
+      break;
+
+    default:
+      break;
+    }
+  }
+   
+  private void regresaVentana() {
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaCrudResponsables.setVisible(true);
+  }
+  
+  private boolean añadeResponsable(Responsable responsablePorAñadir) {
+    if (VentanaAñadirResponsable.this.inventarioResponsable.guardaResponsable(responsablePorAñadir)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  private Responsable obtieneValoresTextBox(){
+    Responsable responsable = new Responsable();
+    responsable.setNombres(this.jTextFieldNombre.getText());
+    responsable.setNumeroPersonal(this.jTextFieldNumeroPersonal.getText());
+    responsable.setTelefono(this.jTextFieldTelefono.getText());
+    responsable.setCorreoinstitucional(this.jTextFieldCorreo.getText());
+    responsable.setEstadoActivado();
+    return responsable;
+  }
+  
+  private ArrayList<JTextField> regresaListaTextBox(){
+     ArrayList<JTextField> textFields = new ArrayList<>();
+            textFields.add(jTextFieldNombre);
+            textFields.add(jTextFieldNumeroPersonal);
+            textFields.add(jTextFieldTelefono);
+            textFields.add(jTextFieldCorreo);
+            return textFields;
+  }
+  
+  private boolean listaTextBoxEsValida(ArrayList<JTextField> textFields) {
+    for (JTextField textbox : textFields) {
+            if (textbox.getText().trim().isEmpty() || 
+                    textbox.getText().toString().length() > NUMEROMAXIMOACEPTADO) {
+                return false;  
+            }
+        }
+    return true;
+  }
+ 
+  private void limpiaCampos() {
+    for (JTextField textbox : this.textFields) {
+      textbox.setText("");
+    }
   }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables

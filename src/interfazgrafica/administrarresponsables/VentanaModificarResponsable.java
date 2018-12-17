@@ -5,18 +5,33 @@
  */
 package interfazgrafica.administrarresponsables;
 
+import centrocomputo.interfaz.*;
+import java.util.*;
+import javax.swing.*;
+
 /**
  *
  * @author Alberto Sánchez
  */
 public class VentanaModificarResponsable extends javax.swing.JFrame {
   
+  private static final int NUMEROMAXIMOACEPTADO = 25;
+  private static final int INGRESOSATISFACTORIO = 1;
+  private static final int DATOSINVALIDOS = 2;
+  private static final int INGRESOINVALIDO = 3;
+  InventarioUsuarioInterface inventarioUsuario;
+  VentanaAdministrarResponsables ventanaCrudResponsable = null;
+  private static VentanaModificarResponsable ventanaModificar = null;
+  ArrayList<JTextField> textFields = new ArrayList<>();
+  private String identificadorFila = null;
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaModificarResponsable
+   * @param ventanaCrudResponsables
+   * @param inventarioResponsable
    */
-  public VentanaModificarResponsable() {
+  public VentanaModificarResponsable(VentanaAdministrarResponsables ventanaCrudResponsables, InventarioResponsableInterface inventarioResponsable) {
     initComponents();
   }
 
@@ -59,12 +74,6 @@ public class VentanaModificarResponsable extends javax.swing.JFrame {
     jLabelNombre.setText("Nombre(s):");
 
     jLabelNumeroPersonal.setText("No. personal:");
-
-    jTextFieldNumeroPersonal.addActionListener(new java.awt.event.ActionListener() {
-      public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jTextFieldNumeroPersonalActionPerformed(evt);
-      }
-    });
 
     jLabelTelefono.setText("Telefono:");
 
@@ -158,55 +167,9 @@ public class VentanaModificarResponsable extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  private void jTextFieldNumeroPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNumeroPersonalActionPerformed
-    // TODO add your handling code here:
-  }//GEN-LAST:event_jTextFieldNumeroPersonalActionPerformed
-
   private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
-    // TODO add your handling code here:
+   
   }//GEN-LAST:event_jButtonGuardarActionPerformed
-
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /*
-     * Set the Nimbus look and feel
-     */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /*
-     * If Nimbus (introduced in Java SE 6) is not available, stay with the
-     * default look and feel.
-     * For details see
-     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(VentanaModificarResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
-
-    /*
-     * Create and display the form
-     */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new VentanaModificarResponsable().setVisible(true);
-      }
-    });
-  }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton jButtonGuardar;

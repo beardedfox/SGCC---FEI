@@ -7,6 +7,7 @@ public class Responsable {
   private String telefono;
   private String correoinstitucional;
   private int estado;
+  private static final int ESTADOACTIVADO = 1;
 
   public Responsable(String nombres, String numeroPersonal, String telefono,
           String correoinstitucional) {
@@ -14,6 +15,13 @@ public class Responsable {
     this.numeroPersonal = numeroPersonal;
     this.telefono = telefono;
     this.correoinstitucional = correoinstitucional;
+  }
+
+  public Responsable() {
+  }
+
+  public static int getEstadoActivado() {
+    return ESTADOACTIVADO;
   }
 
   public String getNombres() {
@@ -34,6 +42,10 @@ public class Responsable {
 
   public String getCorreoinstitucional() {
     return correoinstitucional;
+  }
+  
+  public void setEstadoActivado() {
+    this.estado = ESTADOACTIVADO;
   }
 
   public void setNombres(String nombres) {

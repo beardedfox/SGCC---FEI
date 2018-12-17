@@ -5,8 +5,15 @@
  */
 package interfazgrafica.administrarresponsables;
 
+import CentroComputo.*;
 import centrocomputo.interfaz.*;
+import centrocomputo.inventario.*;
 import interfazgrafica.menujefecentrocomputo.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
+import repositorio.dataaccesobject.*;
+import repositorio.interfaz.*;
 
 /**
  *
@@ -14,17 +21,32 @@ import interfazgrafica.menujefecentrocomputo.*;
  */
 public class VentanaAdministrarResponsables extends javax.swing.JFrame {
 
+  String identificadorFila = null;
   InventarioResponsableInterface inventarioResponsable;
   VentanaMenuJefeCentroComputo ventanaMenu = null;
+  private static VentanaAdministrarResponsables ventanaCrudResponsables = null;
+  private static final int RESPONSABLENOSELECCIONADO = 1;
+  private static final int RESPONSABLEDESHABILITADO = 2;
+  private static final int PROCESONOTERMINADO = 3;
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaAdministrarResponsables
+   * @param ventanaMenu
+   * @param inventarioResponsable
    */
   public VentanaAdministrarResponsables(VentanaMenuJefeCentroComputo ventanaMenu, InventarioResponsableInterface inventarioResponsable) {
     this.inventarioResponsable = inventarioResponsable;
     this.ventanaMenu = ventanaMenu;
+    this.ventanaCrudResponsables = ventanaCrudResponsables;
     initComponents();
+    if (asignaTabla() == true) {
+      alistarModelo();
+    }
+  }
+  
+  public String getIdentificadorFila() {
+    return identificadorFila;
   }
 
   /**
@@ -50,6 +72,11 @@ public class VentanaAdministrarResponsables extends javax.swing.JFrame {
     jLabelAñadir = new javax.swing.JLabel();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+    addComponentListener(new java.awt.event.ComponentAdapter() {
+      public void componentShown(java.awt.event.ComponentEvent evt) {
+        formComponentShown(evt);
+      }
+    });
     getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
     jPanelMenu.setBackground(new java.awt.Color(255, 255, 255));
@@ -90,15 +117,35 @@ public class VentanaAdministrarResponsables extends javax.swing.JFrame {
     jPanelMenu.add(jLabelEtiquetaAdministrarResponsables, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 20, -1, -1));
 
     jLabelEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelCerrar.png"))); // NOI18N
+    jLabelEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelEliminarMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 60, -1, -1));
 
     jLabelEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelEditar.png"))); // NOI18N
+    jLabelEditar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelEditarMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelEditar, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 60, -1, -1));
 
     jLabelVer.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelVerMas.png"))); // NOI18N
+    jLabelVer.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelVerMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 60, -1, -1));
 
     jLabelAñadir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelAñadir.png"))); // NOI18N
+    jLabelAñadir.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelAñadirMouseClicked(evt);
+      }
+    });
     jPanelMenu.add(jLabelAñadir, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 60, -1, -1));
 
     getContentPane().add(jPanelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 390));
@@ -112,6 +159,143 @@ public class VentanaAdministrarResponsables extends javax.swing.JFrame {
     this.ventanaMenu.setVisible(true);
   }//GEN-LAST:event_jLabelRegresarMouseClicked
 
+  private void jLabelAñadirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelAñadirMouseClicked
+    creaPantallaAñadirResponsable();
+  }//GEN-LAST:event_jLabelAñadirMouseClicked
+
+  private void jLabelVerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelVerMouseClicked
+    seleccionResponsables();
+        if (identificadorFila != null) {
+      creaPantallaVisualizar();
+    }
+  }//GEN-LAST:event_jLabelVerMouseClicked
+
+  private void jLabelEditarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelEditarMouseClicked
+    seleccionResponsables();
+        if (identificadorFila != null) {
+      creaPantallaModificar();
+    }
+  }//GEN-LAST:event_jLabelEditarMouseClicked
+
+  private void jLabelEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelEliminarMouseClicked
+    seleccionResponsables();
+        if (identificadorFila != null){
+      int respuesta = JOptionPane.showConfirmDialog(VentanaAdministrarResponsables.this, 
+              "Deseas deshabilitar al responsable seleccionado?", "Deshabilitar responsable",
+              JOptionPane.INFORMATION_MESSAGE);
+    if (respuesta == JOptionPane.YES_OPTION) {
+      if (VentanaAdministrarResponsables.this.inventarioResponsable.eliminaResponsable(identificadorFila)) {
+        despliegaAviso(RESPONSABLEDESHABILITADO);
+      } else {
+        despliegaAviso(PROCESONOTERMINADO);
+      }
+    }
+   }
+  }//GEN-LAST:event_jLabelEliminarMouseClicked
+
+  private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+    actualizaLista();
+  }//GEN-LAST:event_formComponentShown
+
+   private void seleccionResponsables() {
+    try {
+      identificadorFila = (String) jTableResponsables.getModel().getValueAt(jTableResponsables.getSelectedRow(), 1);
+    } catch (ArrayIndexOutOfBoundsException Exception) {
+      despliegaAviso(RESPONSABLENOSELECCIONADO);
+    }
+  }
+  
+  private void despliegaAviso(int tipoAdvertencia) {
+
+    switch (tipoAdvertencia) {
+    case 1:
+      JOptionPane.showMessageDialog(VentanaAdministrarResponsables.this,
+              "No haz seleccionado un responsable", "Advertencia", JOptionPane.ERROR_MESSAGE);
+      break;
+      
+      case 2:
+      JOptionPane.showMessageDialog(VentanaAdministrarResponsables.this,
+              "Responsable ha sido deshabilitado", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+      break;
+      
+      case 3:
+      JOptionPane.showMessageDialog(VentanaAdministrarResponsables.this,
+              "Proceso no pudo ser terminado", "Advertencia", JOptionPane.ERROR_MESSAGE);
+      break;
+
+    default:
+      break;
+    }
+  }
+  
+  private void creaPantallaAñadirResponsable() {
+    AccesoDatosResponsableInterface repositorioResponsable = new AccesoDatosResponsable();
+    InventarioResponsableInterface inventarioResponsable = InventarioResponsable.obtieneInstancia(repositorioResponsable);
+    VentanaAñadirResponsable ventanaAgregarResponsable = new VentanaAñadirResponsable(this, inventarioResponsable);
+    ventanaAgregarResponsable.setLocationRelativeTo(null);
+    this.setVisible(false);
+    ventanaAgregarResponsable.setVisible(true);
+  }
+  
+  private void creaPantallaModificar() {
+    AccesoDatosResponsableInterface repositorioResponsable = new AccesoDatosResponsable();
+    InventarioResponsableInterface inventarioResponsable = InventarioResponsable.obtieneInstancia(repositorioResponsable);
+    VentanaModificarResponsable ventanaModificarResponsable = new VentanaModificarResponsable(this, inventarioResponsable);
+    ventanaModificarResponsable.setLocationRelativeTo(null);
+    this.setVisible(false);
+    ventanaModificarResponsable.setVisible(true);
+  }
+  
+  private void creaPantallaVisualizar() {
+   AccesoDatosResponsableInterface repositorioResponsable = new AccesoDatosResponsable();
+    InventarioResponsableInterface inventarioResponsable = InventarioResponsable.obtieneInstancia(repositorioResponsable);
+    VentanaVisualizarResponsable ventanaVisualizarResponsable = new VentanaVisualizarResponsable(this, inventarioResponsable);
+    ventanaVisualizarResponsable.setLocationRelativeTo(null);
+    this.setVisible(false);
+    ventanaVisualizarResponsable.setVisible(true);
+  }
+  
+  private DefaultTableModel llenaModelo() {
+        DefaultTableModel modelResponsables = new DefaultTableModel(
+        new Object[][] {}, new String[] {"Nombre", "Numero personal",
+          "Telefono"});
+    List<Responsable> listaResponsable = 
+            VentanaAdministrarResponsables.this.inventarioResponsable.regresaListaResponsable();
+        if (listaResponsable == null || listaResponsable.isEmpty()) {
+         return null; 
+        }
+        for (Responsable responsable : listaResponsable) {
+          String nombre = responsable.getNombres();
+          String numero = responsable.getNumeroPersonal();
+          String telefono = responsable.getTelefono();
+          modelResponsables.addRow(new String[]{nombre, numero, telefono});
+      }
+        return modelResponsables;
+  }
+  
+  private boolean asignaTabla() {
+    DefaultTableModel modeloResponsables = VentanaAdministrarResponsables.this.llenaModelo();
+    if (modeloResponsables == null) {
+      return false;
+    } else {
+      jTableResponsables.setModel(modeloResponsables);
+      return true;
+    }
+  }
+  
+  private void actualizaLista(){
+   if (asignaTabla() == true) {
+      alistarModelo();
+      identificadorFila = null;
+    }
+   identificadorFila = null;
+  }
+  
+  private void alistarModelo(){
+    jTableResponsables.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    jTableResponsables.setDefaultEditor(Object.class, null);
+  }
+  
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JLabel jLabelAñadir;
   private javax.swing.JLabel jLabelEditar;

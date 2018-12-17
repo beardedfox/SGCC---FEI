@@ -5,9 +5,15 @@
  */
 package interfazgrafica.registrardictamen;
 
+import CentroComputo.*;
 import centrocomputo.interfaz.*;
+import herramientas.*;
+import interfazgrafica.administrarhardware.*;
 import interfazgrafica.menujefecentrocomputo.*;
 import interfazgrafica.menutecnicoacademico.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
 
 /**
  *
@@ -15,19 +21,43 @@ import interfazgrafica.menutecnicoacademico.*;
  */
 public class VentanaRegistrarDictamen extends javax.swing.JFrame {
 
-  InventarioUsuarioInterface inventarioUsuario;
+  private static final int NUMEROMAXIMOACEPTADOTEXTAREA = 200;
+  private static final int INGRESOSATISFACTORIO = 1;
+  private static final int DATOSINVALIDOS = 2;
+  private static final int INGRESOINVALIDO = 3;
+  ArrayList<JTextArea> textAreaList = new ArrayList<>();
+  GeneraIdentificador generadorIds = new GeneraIdentificador();
+  JComboBox<String> comboBox = new JComboBox<String>();
+  InventarioDictamenInterface inventarioDictamen;
+  InventarioHardwareInterface inventarioHardware;
+  VentanaRegistrarDictamen ventanaRegistrarDictamen = null;
+  Dictamen dictamen = new Dictamen();
   VentanaMenuTecnicoAcademico ventanaMenu = null;
   String rolNecesario = "TA";
 
   /**
    * Creates new form VentanaRegistrarDictamen
    */
-  public VentanaRegistrarDictamen(VentanaMenuTecnicoAcademico ventanaMenu, InventarioUsuarioInterface inventarioUsuario) {
-    this.inventarioUsuario = inventarioUsuario;
+  public VentanaRegistrarDictamen(VentanaMenuTecnicoAcademico ventanaMenu, InventarioDictamenInterface inventarioDictamen,   
+          InventarioHardwareInterface inventarioHardware) {
+    this.inventarioHardware = inventarioHardware;
+    this.inventarioDictamen = inventarioDictamen;
+    this.ventanaRegistrarDictamen = ventanaRegistrarDictamen;
     this.ventanaMenu = ventanaMenu;
     initComponents();
+    comboBox.setEnabled(true);
+    comboBox.setVisible(true);
+    comboBox.setSize(100,20);
+    comboBox.setLocation(15, 40);
+    agregaItems();
+       comboBox.addActionListener (new ActionListener () {
+    public void actionPerformed(ActionEvent e) {
+        obtieneHardwareSeleccionado();
+    }
+});
+    this.jPanelInformacionDispositivo.add(comboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(392, 9, 150, -1));
   }
-
+  
   /**
    * This method is called from within the constructor to
    * initialize the form.
@@ -38,7 +68,6 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
-    jLabel1 = new javax.swing.JLabel();
     jPanelRegistrarDictamen = new javax.swing.JPanel();
     jLabelEtiquetaRegresar1 = new javax.swing.JLabel();
     jLabelRegresar1 = new javax.swing.JLabel();
@@ -50,20 +79,17 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
     jComboBoxTipoDictamen = new javax.swing.JComboBox<>();
     jComboBoxTipoMantenimiento = new javax.swing.JComboBox<>();
     jPanelInformacionDispositivo = new javax.swing.JPanel();
-    jLabelTipoEquipo = new javax.swing.JLabel();
     jLabelNumeroinventario = new javax.swing.JLabel();
-    jComboBoxNumeroInventario = new javax.swing.JComboBox<>();
     jLabelTipoBorrado = new javax.swing.JLabel();
     jLabelPartesDispositivo = new javax.swing.JLabel();
     jLabelEstadoDispositivo = new javax.swing.JLabel();
     jLabelModelo = new javax.swing.JLabel();
     jLabelMarca = new javax.swing.JLabel();
-    jTextFieldTipoEquipo = new javax.swing.JTextField();
-    jTextFieldModelo = new javax.swing.JTextField();
-    jTextFieldMarca = new javax.swing.JTextField();
-    jComboBoxPartesDispositivo = new javax.swing.JComboBox<>();
-    jComboBoxEstadoDispositivo = new javax.swing.JComboBox<>();
     jComboBoxTipoBorrado = new javax.swing.JComboBox<>();
+    jLabelModeloRecuperado = new javax.swing.JLabel();
+    jLabelMarcaRecuperada = new javax.swing.JLabel();
+    jLabelPartesDispositivoRecuperado = new javax.swing.JLabel();
+    jLabelEstadoRecuperado = new javax.swing.JLabel();
     jPanelInformacionTabla = new javax.swing.JPanel();
     jLabelTipoFalla = new javax.swing.JLabel();
     jComboBoxTipoFalla = new javax.swing.JComboBox<>();
@@ -79,14 +105,14 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
     jTextAreaObservacionesEquipo = new javax.swing.JTextArea();
     jButtonRegistrar = new javax.swing.JButton();
 
-    jLabel1.setText("jLabel1");
-
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     jPanelRegistrarDictamen.setBackground(new java.awt.Color(255, 255, 255));
+    jPanelRegistrarDictamen.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
     jLabelEtiquetaRegresar1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
     jLabelEtiquetaRegresar1.setText("Regresar");
+    jPanelRegistrarDictamen.add(jLabelEtiquetaRegresar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 11, -1, -1));
 
     jLabelRegresar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
     jLabelRegresar1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -94,19 +120,22 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
         jLabelRegresar1MouseClicked(evt);
       }
     });
+    jPanelRegistrarDictamen.add(jLabelRegresar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
 
     jLabelLogoCc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelLogoPequeñoCc.png"))); // NOI18N
+    jPanelRegistrarDictamen.add(jLabelLogoCc, new org.netbeans.lib.awtextra.AbsoluteConstraints(242, 11, -1, -1));
 
     jLabelEtiquetaRegistrarDictamen.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
     jLabelEtiquetaRegistrarDictamen.setText("Registrar Dictamen");
+    jPanelRegistrarDictamen.add(jLabelEtiquetaRegistrarDictamen, new org.netbeans.lib.awtextra.AbsoluteConstraints(203, 83, -1, -1));
 
     jLabelTipoDictamen.setText("Tipo de dictamen: ");
 
     jLabelTipoMantenimiento.setText("Tipo de mantenimiento:");
 
-    jComboBoxTipoDictamen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    jComboBoxTipoDictamen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Revisión", "Petición", "Revisión preventiva" }));
 
-    jComboBoxTipoMantenimiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    jComboBoxTipoMantenimiento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Preventiva", "Urgente", "Periodico", "Correctivo" }));
 
     javax.swing.GroupLayout jPanelInformacionSolicitanteLayout = new javax.swing.GroupLayout(jPanelInformacionSolicitante);
     jPanelInformacionSolicitante.setLayout(jPanelInformacionSolicitanteLayout);
@@ -135,100 +164,48 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
 
-    jLabelTipoEquipo.setText("Tipo de equipo:");
+    jPanelRegistrarDictamen.add(jPanelInformacionSolicitante, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 116, 556, -1));
+
+    jPanelInformacionDispositivo.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
     jLabelNumeroinventario.setText("Numero inventario:");
-
-    jComboBoxNumeroInventario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    jPanelInformacionDispositivo.add(jLabelNumeroinventario, new org.netbeans.lib.awtextra.AbsoluteConstraints(267, 14, -1, -1));
 
     jLabelTipoBorrado.setText("Tipo de borrado:");
+    jPanelInformacionDispositivo.add(jLabelTipoBorrado, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
 
     jLabelPartesDispositivo.setText("Partes de dispositivo:");
+    jPanelInformacionDispositivo.add(jLabelPartesDispositivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(256, 40, -1, -1));
 
     jLabelEstadoDispositivo.setText("Estado de dispositivo:");
+    jPanelInformacionDispositivo.add(jLabelEstadoDispositivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(254, 68, -1, -1));
 
     jLabelModelo.setText("Modelo:");
+    jPanelInformacionDispositivo.add(jLabelModelo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
 
     jLabelMarca.setText("Marca:");
+    jPanelInformacionDispositivo.add(jLabelMarca, new org.netbeans.lib.awtextra.AbsoluteConstraints(57, 88, -1, -1));
 
-    jComboBoxPartesDispositivo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    jComboBoxTipoBorrado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Parcial", "Total" }));
+    jPanelInformacionDispositivo.add(jComboBoxTipoBorrado, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 20, 104, -1));
 
-    jComboBoxEstadoDispositivo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    jLabelModeloRecuperado.setText("EntradaModelo");
+    jPanelInformacionDispositivo.add(jLabelModeloRecuperado, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, -1));
 
-    jComboBoxTipoBorrado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    jLabelMarcaRecuperada.setText("EntradaMarca");
+    jPanelInformacionDispositivo.add(jLabelMarcaRecuperada, new org.netbeans.lib.awtextra.AbsoluteConstraints(108, 88, -1, -1));
 
-    javax.swing.GroupLayout jPanelInformacionDispositivoLayout = new javax.swing.GroupLayout(jPanelInformacionDispositivo);
-    jPanelInformacionDispositivo.setLayout(jPanelInformacionDispositivoLayout);
-    jPanelInformacionDispositivoLayout.setHorizontalGroup(
-      jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(jPanelInformacionDispositivoLayout.createSequentialGroup()
-        .addContainerGap()
-        .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-          .addComponent(jLabelMarca)
-          .addComponent(jLabelModelo)
-          .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelTipoEquipo)
-            .addComponent(jLabelTipoBorrado)))
-        .addGap(18, 18, 18)
-        .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(jPanelInformacionDispositivoLayout.createSequentialGroup()
-            .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-              .addGroup(jPanelInformacionDispositivoLayout.createSequentialGroup()
-                .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                  .addGroup(jPanelInformacionDispositivoLayout.createSequentialGroup()
-                    .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                  .addGroup(jPanelInformacionDispositivoLayout.createSequentialGroup()
-                    .addComponent(jComboBoxTipoBorrado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(42, 42, 42)))
-                .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                  .addComponent(jLabelPartesDispositivo, javax.swing.GroupLayout.Alignment.TRAILING)
-                  .addComponent(jLabelEstadoDispositivo, javax.swing.GroupLayout.Alignment.TRAILING)))
-              .addGroup(jPanelInformacionDispositivoLayout.createSequentialGroup()
-                .addComponent(jTextFieldTipoEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelNumeroinventario)))
-            .addGap(34, 34, 34)
-            .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-              .addComponent(jComboBoxNumeroInventario, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(jComboBoxPartesDispositivo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(jComboBoxEstadoDispositivo, 0, 103, Short.MAX_VALUE))
-            .addGap(43, 43, 43))
-          .addGroup(jPanelInformacionDispositivoLayout.createSequentialGroup()
-            .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-    );
-    jPanelInformacionDispositivoLayout.setVerticalGroup(
-      jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(jPanelInformacionDispositivoLayout.createSequentialGroup()
-        .addContainerGap()
-        .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabelTipoEquipo)
-          .addComponent(jLabelNumeroinventario)
-          .addComponent(jComboBoxNumeroInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(jTextFieldTipoEquipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabelTipoBorrado)
-          .addComponent(jLabelPartesDispositivo)
-          .addComponent(jComboBoxPartesDispositivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(jComboBoxTipoBorrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabelEstadoDispositivo)
-          .addComponent(jLabelModelo)
-          .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-          .addComponent(jComboBoxEstadoDispositivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-        .addGroup(jPanelInformacionDispositivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jLabelMarca)
-          .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-    );
+    jLabelPartesDispositivoRecuperado.setText("EntradaPartesDispositivo");
+    jPanelInformacionDispositivo.add(jLabelPartesDispositivoRecuperado, new org.netbeans.lib.awtextra.AbsoluteConstraints(393, 40, -1, -1));
+
+    jLabelEstadoRecuperado.setText("EntradaEstado");
+    jPanelInformacionDispositivo.add(jLabelEstadoRecuperado, new org.netbeans.lib.awtextra.AbsoluteConstraints(393, 68, -1, -1));
+
+    jPanelRegistrarDictamen.add(jPanelInformacionDispositivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 169, 560, 120));
 
     jLabelTipoFalla.setText("Tipo de falla:");
 
-    jComboBoxTipoFalla.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+    jComboBoxTipoFalla.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Problemas de red", "Fallo disco duro", "Falla tarjeta madre", "Fallo memoria ram", "No existe señal video", "No prende" }));
 
     jLabelDescripcionProblema.setText("Descipción del problema:");
 
@@ -241,11 +218,11 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
     jPanelInformacionTablaLayout.setHorizontalGroup(
       jPanelInformacionTablaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(jPanelInformacionTablaLayout.createSequentialGroup()
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addContainerGap(83, Short.MAX_VALUE)
         .addComponent(jLabelTipoFalla)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jComboBoxTipoFalla, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(303, 303, 303))
+        .addComponent(jComboBoxTipoFalla, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(290, 290, 290))
       .addGroup(jPanelInformacionTablaLayout.createSequentialGroup()
         .addGap(16, 16, 16)
         .addComponent(jLabelDescripcionProblema)
@@ -270,6 +247,8 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addContainerGap())))
     );
+
+    jPanelRegistrarDictamen.add(jPanelInformacionTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 296, 556, -1));
 
     jLabelObservaciones.setText("Observaciones del equipo:");
 
@@ -314,62 +293,17 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
         .addContainerGap())
     );
 
+    jPanelRegistrarDictamen.add(jPanelDetalleDictamen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 440, -1, -1));
+
     jButtonRegistrar.setBackground(new java.awt.Color(54, 54, 93));
     jButtonRegistrar.setForeground(new java.awt.Color(255, 255, 255));
     jButtonRegistrar.setText("Registrar actividad de mantenimiento");
-
-    javax.swing.GroupLayout jPanelRegistrarDictamenLayout = new javax.swing.GroupLayout(jPanelRegistrarDictamen);
-    jPanelRegistrarDictamen.setLayout(jPanelRegistrarDictamenLayout);
-    jPanelRegistrarDictamenLayout.setHorizontalGroup(
-      jPanelRegistrarDictamenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(jPanelRegistrarDictamenLayout.createSequentialGroup()
-        .addGroup(jPanelRegistrarDictamenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addGroup(jPanelRegistrarDictamenLayout.createSequentialGroup()
-            .addContainerGap()
-            .addGroup(jPanelRegistrarDictamenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-              .addGroup(jPanelRegistrarDictamenLayout.createSequentialGroup()
-                .addComponent(jLabelRegresar1)
-                .addGap(14, 14, 14)
-                .addComponent(jLabelEtiquetaRegresar1)
-                .addGap(124, 124, 124)
-                .addComponent(jLabelLogoCc)
-                .addGap(0, 0, Short.MAX_VALUE))
-              .addComponent(jPanelInformacionSolicitante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(jPanelInformacionDispositivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(jPanelInformacionTabla, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-              .addComponent(jPanelDetalleDictamen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-          .addGroup(jPanelRegistrarDictamenLayout.createSequentialGroup()
-            .addGap(203, 203, 203)
-            .addComponent(jLabelEtiquetaRegistrarDictamen)
-            .addGap(0, 0, Short.MAX_VALUE)))
-        .addContainerGap())
-      .addGroup(jPanelRegistrarDictamenLayout.createSequentialGroup()
-        .addGap(167, 167, 167)
-        .addComponent(jButtonRegistrar)
-        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-    );
-    jPanelRegistrarDictamenLayout.setVerticalGroup(
-      jPanelRegistrarDictamenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-      .addGroup(jPanelRegistrarDictamenLayout.createSequentialGroup()
-        .addContainerGap()
-        .addGroup(jPanelRegistrarDictamenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-          .addComponent(jLabelRegresar1)
-          .addComponent(jLabelEtiquetaRegresar1)
-          .addComponent(jLabelLogoCc))
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jLabelEtiquetaRegistrarDictamen)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jPanelInformacionSolicitante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jPanelInformacionDispositivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jPanelInformacionTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jPanelDetalleDictamen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jButtonRegistrar)
-        .addContainerGap())
-    );
+    jButtonRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jButtonRegistrarMouseClicked(evt);
+      }
+    });
+    jPanelRegistrarDictamen.add(jButtonRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(167, 550, -1, -1));
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
@@ -380,7 +314,7 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
-        .addComponent(jPanelRegistrarDictamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addComponent(jPanelRegistrarDictamen, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addGap(0, 0, Short.MAX_VALUE))
     );
 
@@ -393,32 +327,162 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
     this.ventanaMenu.setVisible(true);
   }//GEN-LAST:event_jLabelRegresar1MouseClicked
 
+  private void jButtonRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegistrarMouseClicked
+    this.textAreaList = this.regresaListaTextArea();
+    if (!listaTextAreaEsValida(textAreaList)) {
+      despliegaAviso(DATOSINVALIDOS);
+    } else {
+      if (añadeDictamen(this.dictamen=this.obtieneValoresDictamen())) {
+        if (añadeDictamen_Hardware(this.dictamen, this.obtieneValoresHardware())){
+          despliegaAviso(INGRESOSATISFACTORIO);
+        }
+      } else {
+        despliegaAviso(INGRESOINVALIDO);
+      }
+    }
+  }//GEN-LAST:event_jButtonRegistrarMouseClicked
+  
+  private boolean añadeDictamen(Dictamen dictamenPorAañadir) {
+    if (VentanaRegistrarDictamen.this.inventarioDictamen.guardaDictamen(dictamenPorAañadir)) {
+     return true;
+    } else {
+      return false;
+    }
+  }
+  
+  private boolean añadeDictamen_Hardware(Dictamen dictamenPorAañadir, Hardware hardwarePorAñadir) {
+    if (VentanaRegistrarDictamen.this.inventarioDictamen.guardaDictamen_Hardware(dictamenPorAañadir, obtieneValoresHardware())) {
+     return true;
+    } else {
+      return false;
+    }
+  }
+  
+  private void despliegaAviso(int tipoAdvertencia) {
+
+    switch (tipoAdvertencia) {
+    case 1:
+      JOptionPane.showMessageDialog(VentanaRegistrarDictamen.this,
+              "EL dictamen ha sido agregado satisfactoriamente", "Información", JOptionPane.INFORMATION_MESSAGE);
+      this.limpiaCampos();
+      break;
+
+    case 2:
+      JOptionPane.showMessageDialog(VentanaRegistrarDictamen.this,
+              "Los datos del dictamen son inválidos o estaban vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+      this.limpiaCampos();
+      break;
+
+    case 3:
+      JOptionPane.showMessageDialog(VentanaRegistrarDictamen.this,
+              "No se ha podido ingresar el dictamen", "Advertencia", JOptionPane.ERROR_MESSAGE);
+      this.limpiaCampos();
+      break;
+
+    default:
+      break;
+    }
+  }
+ 
+ private ArrayList<JTextArea> regresaListaTextArea(){
+     ArrayList<JTextArea> textAreaList = new ArrayList<>();
+            textAreaList.add(jTextAreaDescipcionDictamen);
+            textAreaList.add(jTextAreaDescipcionProblema);
+            textAreaList.add(jTextAreaObservacionesEquipo);
+            return textAreaList;
+  }
+ 
+  
+ private Hardware obtieneValoresHardware(){
+   Hardware hardware = new Hardware();
+   hardware.setNumeroInventario(this.comboBox.getSelectedItem().toString());
+   
+   return hardware;
+ }
+ 
+ private Dictamen obtieneValoresDictamen(){
+   Dictamen dictamen = new Dictamen();
+   dictamen.setIdDictamen(generadorIds.generaUid());
+   dictamen.setTipoDictamen(this.jComboBoxTipoDictamen.getSelectedItem().toString());
+   dictamen.setTipoMantenimiento(this.jComboBoxTipoMantenimiento.getSelectedItem().toString());
+   dictamen.setTipoBorrado(this.jComboBoxTipoBorrado.getSelectedItem().toString());
+   dictamen.setTipoFalla(this.jComboBoxTipoFalla.getSelectedItem().toString());
+   dictamen.setDescripcioDetalladanDictamen(this.jTextAreaDescipcionProblema.getText());
+   dictamen.setObservaciones(this.jTextAreaObservacionesEquipo.getText());
+   dictamen.setDescripcionProblema(this.jTextAreaDescipcionDictamen.getText());
+   return dictamen;
+ }
+ 
+ private boolean listaTextAreaEsValida(ArrayList<JTextArea> textAreaList) {
+    for (JTextArea textarea : textAreaList) {
+            if (textarea.getText().trim().isEmpty() || 
+                    textarea.getText().toString().length() > NUMEROMAXIMOACEPTADOTEXTAREA) {
+                return false;  
+            }
+        }
+    return true;
+  }
+  
+  private void agregaItems(){
+    List<Hardware> listaHardware = this.recuperaLista();
+    for (Hardware harware : listaHardware) {
+    this.comboBox.addItem(harware.getNumeroInventario());
+}
+  }
+  
+  private void obtieneHardwareSeleccionado(){
+    Hardware hardware =
+    VentanaRegistrarDictamen.this.inventarioHardware.buscaHardware(this.comboBox.getSelectedItem().toString());
+    populaLabels(hardware);
+  }
+  
+  private void populaLabels(Hardware hardware){
+    this.jLabelMarcaRecuperada.setText(hardware.getMarca());
+    this.jLabelModeloRecuperado.setText(hardware.getModelo());
+    this.jLabelPartesDispositivoRecuperado.setText(hardware.getPartesdispositivo());
+    this.jLabelEstadoRecuperado.setText(Integer.toString(hardware.getEstado()));
+  }
+  
+  private List<Hardware> recuperaLista() {
+        java.util.List<Hardware> listaHardware=new java.util.ArrayList<>();
+listaHardware = 
+            VentanaRegistrarDictamen.this.inventarioHardware.regresaListaHardware();
+if (listaHardware == null || listaHardware.isEmpty()) {
+         return null; 
+        }
+return listaHardware;
+  }
+  
+  private void limpiaCampos() {
+    for (JTextArea textArea : this.textAreaList) {
+      textArea.setText("");
+    }
+  }
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton jButtonRegistrar;
-  private javax.swing.JComboBox<String> jComboBoxEstadoDispositivo;
-  private javax.swing.JComboBox<String> jComboBoxNumeroInventario;
-  private javax.swing.JComboBox<String> jComboBoxPartesDispositivo;
   private javax.swing.JComboBox<String> jComboBoxTipoBorrado;
   private javax.swing.JComboBox<String> jComboBoxTipoDictamen;
   private javax.swing.JComboBox<String> jComboBoxTipoFalla;
   private javax.swing.JComboBox<String> jComboBoxTipoMantenimiento;
-  private javax.swing.JLabel jLabel1;
   private javax.swing.JLabel jLabelDescripcionDictamen;
   private javax.swing.JLabel jLabelDescripcionProblema;
   private javax.swing.JLabel jLabelEstadoDispositivo;
+  private javax.swing.JLabel jLabelEstadoRecuperado;
   private javax.swing.JLabel jLabelEtiquetaRegistrarDictamen;
   private javax.swing.JLabel jLabelEtiquetaRegresar1;
   private javax.swing.JLabel jLabelLogoCc;
   private javax.swing.JLabel jLabelMarca;
+  private javax.swing.JLabel jLabelMarcaRecuperada;
   private javax.swing.JLabel jLabelModelo;
+  private javax.swing.JLabel jLabelModeloRecuperado;
   private javax.swing.JLabel jLabelNumeroinventario;
   private javax.swing.JLabel jLabelObservaciones;
   private javax.swing.JLabel jLabelPartesDispositivo;
+  private javax.swing.JLabel jLabelPartesDispositivoRecuperado;
   private javax.swing.JLabel jLabelRegresar1;
   private javax.swing.JLabel jLabelTipoBorrado;
   private javax.swing.JLabel jLabelTipoDictamen;
-  private javax.swing.JLabel jLabelTipoEquipo;
   private javax.swing.JLabel jLabelTipoFalla;
   private javax.swing.JLabel jLabelTipoMantenimiento;
   private javax.swing.JPanel jPanelDetalleDictamen;
@@ -432,8 +496,5 @@ public class VentanaRegistrarDictamen extends javax.swing.JFrame {
   private javax.swing.JTextArea jTextAreaDescipcionDictamen;
   private javax.swing.JTextArea jTextAreaDescipcionProblema;
   private javax.swing.JTextArea jTextAreaObservacionesEquipo;
-  private javax.swing.JTextField jTextFieldMarca;
-  private javax.swing.JTextField jTextFieldModelo;
-  private javax.swing.JTextField jTextFieldTipoEquipo;
   // End of variables declaration//GEN-END:variables
 }

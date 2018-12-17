@@ -290,8 +290,6 @@ public class VentanaAñadirHardware extends javax.swing.JFrame {
   }
    
    private Hardware obtieneValores(){
-     
-
     Hardware hardware = new Hardware();
     hardware.setNumeroInventario(this.jTextFieldNumeroInventario.getText());
     hardware.setMarca(this.jTextFieldMarca.getText());

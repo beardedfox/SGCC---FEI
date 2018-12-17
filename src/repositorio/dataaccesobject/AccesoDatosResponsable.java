@@ -17,29 +17,24 @@ public class AccesoDatosResponsable implements AccesoDatosResponsableInterface {
 
   @Override
   public boolean actualizaResponsableRepositorio(Responsable responsable) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
   }
 
   @Override
   public Responsable buscaResponsableRepositorio(String idResponsable) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
   @Override
   public boolean eliminaResponsableRepositorio(String idResponsable) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
   @Override
   public boolean guardaResponsableRepositorio(Responsable responsable) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
   @Override
   public List<Responsable> regresaListaResponsableRepositorio() {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
-
 
   
 }

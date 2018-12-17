@@ -5,7 +5,7 @@
  */
 package centrocomputo.inventario;
 
-import CentroComputo.Dictamen;
+import CentroComputo.*;
 import centrocomputo.interfaz.InventarioDictamenInterface;
 import repositorio.interfaz.AccesoDatosDictamenInterface;
 
@@ -31,7 +31,19 @@ public class InventarioDictamen implements InventarioDictamenInterface {
   
   @Override
   public boolean guardaDictamen(Dictamen dictamen) {
-   return false;
+    if (this.repositorioDictamen.guardaDictamenRepositorio(dictamen)) {
+      return true;
+    }
+    return false;
   }
+
+  @Override
+  public boolean guardaDictamen_Hardware(Dictamen dictamen, Hardware hardware) {
+    if (this.repositorioDictamen.guardaDictamen_HardwareRepositorio(dictamen, hardware)){
+      return true;
+    }
+    return false;
+  }
+
   
 }

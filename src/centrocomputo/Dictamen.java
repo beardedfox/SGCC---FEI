@@ -12,8 +12,10 @@ public class Dictamen {
   private String tipoFalla;
   private String partesDispositivo;
   private String estado;
-  private Usuario tecnico;
+  private String observaciones;
+  private String tipoBorrado;
 
+  
   public Dictamen(String idDictamen, String tipoDictamen, String descripcioDetalladanDictamen, String descripcionProblema, String tipoMantenimiento, String tipoFalla, String partesDispositivo, String estado) {
     this.idDictamen = idDictamen;
     this.tipoDictamen = tipoDictamen;
@@ -23,6 +25,18 @@ public class Dictamen {
     this.tipoFalla = tipoFalla;
     this.partesDispositivo = partesDispositivo;
     this.estado = estado;
+  }
+
+  public Dictamen() {
+    
+  }
+
+  public String getObservaciones() {
+    return observaciones;
+  }
+
+  public String getTipoBorrado() {
+    return tipoBorrado;
   }
 
   public String getIdDictamen() {
@@ -64,6 +78,16 @@ public class Dictamen {
   public void setTipoDictamen(String tipoDictamen) {
     this.tipoDictamen = tipoDictamen;
   }
+
+  public void setObservaciones(String observaciones) {
+    this.observaciones = observaciones;
+  }
+
+  public void setTipoBorrado(String tipoBorrado) {
+    this.tipoBorrado = tipoBorrado;
+  }
+  
+  
 
   public void setDescripcioDetalladanDictamen(String descripcioDetalladanDictamen) {
     this.descripcioDetalladanDictamen = descripcioDetalladanDictamen;

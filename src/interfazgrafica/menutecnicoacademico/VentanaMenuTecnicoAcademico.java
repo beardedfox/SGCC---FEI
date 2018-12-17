@@ -6,7 +6,10 @@
 package interfazgrafica.menutecnicoacademico;
 
 import centrocomputo.interfaz.*;
+import centrocomputo.inventario.*;
 import interfazgrafica.registrardictamen.*;
+import repositorio.dataaccesobject.*;
+import repositorio.interfaz.*;
 
 /**
  *
@@ -15,7 +18,8 @@ import interfazgrafica.registrardictamen.*;
 public class VentanaMenuTecnicoAcademico extends javax.swing.JFrame {
   
   private static VentanaMenuTecnicoAcademico ventanaMenuTa = null;
-  InventarioUsuarioInterface inventarioUsuario;
+  InventarioDictamenInterface inventarioDictamen;
+  InventarioHardwareInterface inventarioHardware;
   String rolNecesario = "TA";
 
   /**
@@ -112,8 +116,12 @@ public class VentanaMenuTecnicoAcademico extends javax.swing.JFrame {
   }//GEN-LAST:event_jButtonRegistrarDictamenActionPerformed
 
   private void despliegaVentanaRegistrarDictamen(){
+    AccesoDatosDictamenInterface repositorioDictamen = new AccesoDatosDictamen();
+     AccesoDatosHardwareInterface repositorioHardware = new AccesoDatosHardware();
+    InventarioHardwareInterface inventarioHardware = InventarioHardware.obtieneInstancia(repositorioHardware);
+    InventarioDictamenInterface inventarioDictamen = InventarioDictamen.obtieneInstancia(repositorioDictamen);
     VentanaRegistrarDictamen ventanaDictamen 
-            = new VentanaRegistrarDictamen(this, inventarioUsuario);
+            = new VentanaRegistrarDictamen(this, inventarioDictamen, inventarioHardware);
     ventanaDictamen.setLocationRelativeTo(null);
     ventanaDictamen.setVisible(true);
     this.setVisible(false);

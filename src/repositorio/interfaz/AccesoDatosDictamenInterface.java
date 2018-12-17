@@ -5,7 +5,7 @@
  */
 package repositorio.interfaz;
 
-import CentroComputo.Dictamen;
+import CentroComputo.*;
 
 /**
  *
@@ -14,5 +14,8 @@ import CentroComputo.Dictamen;
 public interface AccesoDatosDictamenInterface {
   
   public boolean guardaDictamenRepositorio (Dictamen dictamen);
+  
+  public boolean guardaDictamen_HardwareRepositorio (Dictamen dictamen, Hardware hardware);
+  
   
 }

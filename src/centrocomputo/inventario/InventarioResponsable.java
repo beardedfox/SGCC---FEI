@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package centrocomputo.inventario;
 
 import CentroComputo.Responsable;
@@ -11,7 +12,9 @@ import java.util.List;
 import repositorio.interfaz.AccesoDatosResponsableInterface;
 
 /**
- *
+ * Clase Inventario Responsable.
+ * Clase para interactuar
+ * con clases de base de datos
  * @author Alberto Sánchez
  */
 public class InventarioResponsable implements InventarioResponsableInterface {
@@ -24,7 +27,8 @@ public class InventarioResponsable implements InventarioResponsableInterface {
     this.repositorioResponsable = repositorioResponsable;
   }
 
-  public static InventarioResponsable obtieneInstancia(AccesoDatosResponsableInterface repositorioResponsable) {
+  public static InventarioResponsable obtieneInstancia(
+          AccesoDatosResponsableInterface repositorioResponsable) {
     if (InventarioResponsable.inventarioResponsable == null) {
       InventarioResponsable.inventarioResponsable = new InventarioResponsable(repositorioResponsable);
     }

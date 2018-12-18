@@ -76,7 +76,6 @@ public class Usuario {
     return rol;
   }
   
-
   public int getEstadoHabilitado() {
     return ESTADOHABILITADO;
   }
@@ -124,7 +123,4 @@ public class Usuario {
   public void setTelefonoConExtension(String telefonoConExtension) {
     this.telefonoConExtension = telefonoConExtension;
   }
-  
-  
-  
 }

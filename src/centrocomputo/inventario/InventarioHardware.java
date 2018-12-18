@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package centrocomputo.inventario;
 
 import CentroComputo.Hardware;
@@ -11,7 +12,9 @@ import java.util.List;
 import repositorio.interfaz.AccesoDatosHardwareInterface;
 
 /**
- *
+ * Clase Inventario hardware.
+ * Clase para interactuar
+ * con clases de base de datos
  * @author Alberto Sánchez
  */
 public class InventarioHardware implements InventarioHardwareInterface {
@@ -20,11 +23,17 @@ public class InventarioHardware implements InventarioHardwareInterface {
   private static InventarioHardware inventarioHardware = null;
   private List<Hardware> listaHardware;
   
-  private InventarioHardware(AccesoDatosHardwareInterface repositorioHardware){
-      this.repositorioHardware = repositorioHardware;
+  private InventarioHardware(AccesoDatosHardwareInterface repositorioHardware) {
+    this.repositorioHardware = repositorioHardware;
   }
   
-  public static InventarioHardware obtieneInstancia(AccesoDatosHardwareInterface repositorioHardware){
+  /**
+   *Constructor de Hardware.
+   *Encargado de recibir datos de hardware
+   *y crear un dictamen de forma óptima
+   */
+  public static InventarioHardware obtieneInstancia(
+          AccesoDatosHardwareInterface repositorioHardware) {
     if (InventarioHardware.inventarioHardware == null) {
       InventarioHardware.inventarioHardware = new InventarioHardware(repositorioHardware);
     }
@@ -51,7 +60,7 @@ public class InventarioHardware implements InventarioHardwareInterface {
 
   @Override
   public boolean eliminaHardware(String idHardware) {
-     if (this.repositorioHardware.eliminaHardwareRepositorio(idHardware)) {
+    if (this.repositorioHardware.eliminaHardwareRepositorio(idHardware)) {
       return true;
     }
     return false;
@@ -71,7 +80,7 @@ public class InventarioHardware implements InventarioHardwareInterface {
     if (this.listaHardware == null || this.listaHardware.isEmpty()) {
       return null;
     } else {
-    return this.listaHardware;
+      return this.listaHardware;
     }
   }
   

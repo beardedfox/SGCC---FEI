@@ -17,26 +17,26 @@ public class Hardware {
 
   /**
   *Constructor de Hardware.
-   *Encargado de recibir datos de hardware
-   *y crear un hardware de forma óptima
-   *
-   * @param numeroInventario
-   * Numero de inventario de hardware
-   * @param numeroSerie
-   * Numero de serie
-   * @param marca
-   * Marca de hardware
-   * @param ubicacion
-   * Unicacion de hardware
-   * @param tipoDispositivo
-   * tipo de hardware
-   * @param estado
-   * Estado de hardware
-   * @param fechaAdquisicion
-   * Fecha de adquisicion hardware
-   * @param partesdispositivo
-   * Partes de dispositivo de hardware
-   */ 
+  *Encargado de recibir datos de hardware
+  *y crear un hardware de forma óptima
+  *
+  * @param numeroInventario
+  * Numero de inventario de hardware
+  * @param numeroSerie
+  * Numero de serie
+  * @param marca
+  * Marca de hardware
+  * @param ubicacion
+  * Unicacion de hardware
+  * @param tipoDispositivo
+  * tipo de hardware
+  * @param estado
+  * Estado de hardware
+  * @param fechaAdquisicion
+  * Fecha de adquisicion hardware
+  * @param partesdispositivo
+  * Partes de dispositivo de hardware
+  */ 
   public Hardware(String numeroInventario, String numeroSerie, String modelo,
           String marca, String tipoDispositivo, int estado, String ubicacion,
           Date fechaAdquisicion, String partesdispositivo) {

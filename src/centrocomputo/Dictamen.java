@@ -109,8 +109,6 @@ public class Dictamen {
     this.tipoBorrado = tipoBorrado;
   }
   
-  
-
   public void setDescripcioDetalladanDictamen(String descripcioDetalladanDictamen) {
     this.descripcioDetalladanDictamen = descripcioDetalladanDictamen;
   }

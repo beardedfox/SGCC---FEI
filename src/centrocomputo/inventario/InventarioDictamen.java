@@ -3,14 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package centrocomputo.inventario;
 
-import CentroComputo.*;
+import CentroComputo.Dictamen;
+import CentroComputo.Hardware;
 import centrocomputo.interfaz.InventarioDictamenInterface;
 import repositorio.interfaz.AccesoDatosDictamenInterface;
 
 /**
- *
+ * Clase Inventario dictamen.
+ * Clase para interactuar
+ * con clases de base de datos
  * @author Alberto Sánchez
  */
 public class InventarioDictamen implements InventarioDictamenInterface {
@@ -22,7 +26,15 @@ public class InventarioDictamen implements InventarioDictamenInterface {
     this.repositorioDictamen = repositorioDictamen;
   }
 
-  public static InventarioDictamen obtieneInstancia(AccesoDatosDictamenInterface repositorioDictamen) {
+  /**
+  *Metodo obtieneInstancia.
+  *Encargado obtener instancia 
+  *del inventario de dictamen
+  * @param repositorioDictamen
+  * Respositorio a agregar
+  */ 
+  public static InventarioDictamen obtieneInstancia(
+          AccesoDatosDictamenInterface repositorioDictamen) {
     if (InventarioDictamen.inventarioDictamen == null) {
       InventarioDictamen.inventarioDictamen = new InventarioDictamen(repositorioDictamen);
     }
@@ -39,11 +51,9 @@ public class InventarioDictamen implements InventarioDictamenInterface {
 
   @Override
   public boolean guardaDictamen_Hardware(Dictamen dictamen, Hardware hardware) {
-    if (this.repositorioDictamen.guardaDictamen_HardwareRepositorio(dictamen, hardware)){
+    if (this.repositorioDictamen.guardaDictamen_HardwareRepositorio(dictamen, hardware)) {
       return true;
     }
     return false;
   }
-
-  
 }

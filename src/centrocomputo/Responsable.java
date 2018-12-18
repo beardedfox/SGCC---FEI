@@ -8,7 +8,21 @@ public class Responsable {
   private String correoinstitucional;
   private int estado;
   private static final int ESTADOACTIVADO = 1;
-
+  
+  /**
+   *Constructor de Responsable.
+   *Encargado de recibir datos de responsable
+   *y crear un responsable de forma óptima
+   *
+   * @param nombres
+   * Nombres de resposnable
+   * @param numeroPersonal
+   * Numero de personal 
+   * @param telefono
+   * Telefono de responsable
+   * @param correoinstitucional
+   * Correo institucional de hardware
+   */
   public Responsable(String nombres, String numeroPersonal, String telefono,
           String correoinstitucional) {
     this.nombres = nombres;

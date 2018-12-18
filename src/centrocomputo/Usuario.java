@@ -14,9 +14,24 @@ public class Usuario {
   private static final int ESTADODESHABILITADO = 0;
   private String telefonoConExtension;
 
-  public Usuario() {
-  }
-
+  /**
+   *Constructor de Usuario.
+   *Encargado de recibir datos de Usuario
+   *y crear un usuario de forma óptima
+   *
+   * @param identificador
+   * Identificador de usuario
+   * @param nombres
+   * Nombres de usuario
+   * @param apellido
+   * Apellido de usuarios
+   * @param correoInstitucional
+   * Correo institucional de usuario
+   * @param contrasenia
+   * Contrasenia de usuario
+   * @param telefonoConExtension
+   * Telefono de usuario
+   */ 
   public Usuario(String identificador, String nombres, String apellido,
           String correoInstitucional, String contrasenia,
           String telefonoConExtension) {
@@ -28,6 +43,9 @@ public class Usuario {
     this.rol = ROLTECNICOACADEMICO;
     this.telefonoConExtension = telefonoConExtension;
     this.estado = ESTADOHABILITADO;
+  }
+  
+  public Usuario() {
   }
 
   public int getEstado() {

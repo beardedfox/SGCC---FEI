@@ -3,8 +3,8 @@ package CentroComputo;
 import java.sql.Date;
 
 public class Hardware {
-	
-  private final int ACTIVADO = 1;
+  
+  private static final int ACTIVADO = 1;
   private String numeroInventario;
   private String numeroSerie;
   private String modelo;
@@ -15,6 +15,28 @@ public class Hardware {
   private Date fechaAdquisicion;
   private String partesdispositivo;
 
+  /**
+  *Constructor de Hardware.
+   *Encargado de recibir datos de hardware
+   *y crear un hardware de forma óptima
+   *
+   * @param numeroInventario
+   * Numero de inventario de hardware
+   * @param numeroSerie
+   * Numero de serie
+   * @param marca
+   * Marca de hardware
+   * @param ubicacion
+   * Unicacion de hardware
+   * @param tipoDispositivo
+   * tipo de hardware
+   * @param estado
+   * Estado de hardware
+   * @param fechaAdquisicion
+   * Fecha de adquisicion hardware
+   * @param partesdispositivo
+   * Partes de dispositivo de hardware
+   */ 
   public Hardware(String numeroInventario, String numeroSerie, String modelo,
           String marca, String tipoDispositivo, int estado, String ubicacion,
           Date fechaAdquisicion, String partesdispositivo) {
@@ -28,10 +50,9 @@ public class Hardware {
     this.fechaAdquisicion = fechaAdquisicion;
     this.partesdispositivo = partesdispositivo;
   }
-	
+  
   public Hardware() {
   }
-
 
   public String getNumeroInventario() {
     return numeroInventario;

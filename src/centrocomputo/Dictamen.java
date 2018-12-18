@@ -15,8 +15,30 @@ public class Dictamen {
   private String observaciones;
   private String tipoBorrado;
 
-  
-  public Dictamen(String idDictamen, String tipoDictamen, String descripcioDetalladanDictamen, String descripcionProblema, String tipoMantenimiento, String tipoFalla, String partesDispositivo, String estado) {
+  /**
+   *Constructor de Dictamen.
+   *Encargado de recibir datos de dictamen
+   *y crear un dictamen de forma óptima
+   * @param idDictamen
+   * Identificador de dictamen
+   * @param tipoDictamen
+   * Tipo de dictamen
+   * @param descripcionProblema
+   * Descripcion de problema
+   * @param tipoMantenimiento
+   * tipo de mantenimiento
+   * @param tipoFalla
+   * Tipo de falla
+   * @param partesDispositivo
+   * Partes de dispositivo
+   * @param descripcioDetalladanDictamen
+   * Descripcion d dictamen
+   * @param estado
+   * Estado de dictamen
+   */
+  public Dictamen(String idDictamen, String tipoDictamen, String descripcioDetalladanDictamen,
+          String descripcionProblema, String tipoMantenimiento, String tipoFalla,
+          String partesDispositivo, String estado) {
     this.idDictamen = idDictamen;
     this.tipoDictamen = tipoDictamen;
     this.descripcioDetalladanDictamen = descripcioDetalladanDictamen;

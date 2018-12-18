@@ -5,7 +5,9 @@
  */
 package interfazgrafica.administrarresponsables;
 
+import CentroComputo.*;
 import centrocomputo.interfaz.*;
+import javax.swing.*;
 
 /**
  *
@@ -13,17 +15,22 @@ import centrocomputo.interfaz.*;
  */
 public class VentanaVisualizarResponsable extends javax.swing.JFrame {
   
+  InventarioResponsableInterface inventarioResponsable;
+  VentanaAdministrarResponsables ventanaCrudResponsable = null;
+  private static VentanaVisualizarResponsable ventanaVisualizar = null;
+  private String identificadorFila = null;
   String rolNecesario = "JCC";
 
   /**
    * Creates new form VentanaVisualizarResponsable
    */
-  public VentanaVisualizarResponsable() {
+    VentanaVisualizarResponsable(VentanaAdministrarResponsables ventanaCrudResponsable, InventarioResponsableInterface inventarioResponsable) {
+    this.inventarioResponsable = inventarioResponsable;
+    this.ventanaVisualizar = ventanaVisualizar;
+    this.ventanaCrudResponsable = ventanaCrudResponsable;
+    identificadorFila = ventanaCrudResponsable.getIdentificadorFila();
     initComponents();
-  }
-
-  VentanaVisualizarResponsable(VentanaAdministrarResponsables ventanaCrudResponsables, InventarioResponsableInterface inventarioResponsable) {
-    
+    despliegaResponsable();
   }
 
   /**
@@ -57,6 +64,11 @@ public class VentanaVisualizarResponsable extends javax.swing.JFrame {
     jLabelEtiquetaRegresar.setText("Regresar");
 
     jLabelRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/interfazgrafica/imagenes/LabelBack.png"))); // NOI18N
+    jLabelRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jLabelRegresarMouseClicked(evt);
+      }
+    });
 
     jLabelEtiquetaVisualizarResponsable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
     jLabelEtiquetaVisualizarResponsable.setText("Visualizar Responsable");
@@ -156,47 +168,35 @@ public class VentanaVisualizarResponsable extends javax.swing.JFrame {
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
-  /**
-   * @param args the command line arguments
-   */
-  public static void main(String args[]) {
-    /*
-     * Set the Nimbus look and feel
-     */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /*
-     * If Nimbus (introduced in Java SE 6) is not available, stay with the
-     * default look and feel.
-     * For details see
-     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(VentanaVisualizarResponsable.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
+  private void jLabelRegresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelRegresarMouseClicked
+    regresaVentana();
+  }//GEN-LAST:event_jLabelRegresarMouseClicked
 
-    /*
-     * Create and display the form
-     */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new VentanaVisualizarResponsable().setVisible(true);
-      }
-    });
+  private void regresaVentana() {
+    this.setVisible(false);
+    this.dispose();
+    this.ventanaCrudResponsable.setVisible(true);
   }
+   
+  private void despliegaResponsable() {
+    if (!recuperaResponsable()) {
+      JOptionPane.showMessageDialog(VentanaVisualizarResponsable.this,
+              "No se ha podido recuperar la información del usuario ", "Advertencia", JOptionPane.ERROR_MESSAGE);
+    }
+  }
+   
+  private boolean recuperaResponsable() {
+    Responsable responsable = VentanaVisualizarResponsable.this.inventarioResponsable.buscaResponsable(identificadorFila);
+    if (responsable != null) {
+      this.jLabelVisualizarNombre.setText(responsable.getNombres());
+      this.jLabelVisualizarNumeroPersonal.setText(responsable.getNumeroPersonal());
+      this.jLabelVisualizarTelefono.setText(responsable.getTelefono());
+      this.jLabelVisualizarCorreo.setText(responsable.getTelefono());
+      return true;
+    }
+    return false;
+  }
+
 
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JLabel jLabelCorreo;

@@ -139,6 +139,9 @@
               <Image iconType="3" name="/interfazgrafica/imagenes/LabelBack.png"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabelRegresarMouseClicked"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelEtiquetaVisualizarResponsable">
           <Properties>

@@ -28,7 +28,7 @@ public class AccesoDatosResponsable implements AccesoDatosResponsableInterface {
     }
     consultaSql = "UPDATE responsables"
             + " SET matriculaempleado = (?), nombrecompleto = (?),"
-            + " telefono = (?), correoinstitucional = (?), estado = (?)"
+            + " telefono = (?), correoinstitucional = (?)"
             + " WHERE matriculaempleado = (?);";
     try (PreparedStatement consultaParametrizada = Conexion.obtieneConexionepositorio()
             .prepareStatement(consultaSql)) {
@@ -36,8 +36,7 @@ public class AccesoDatosResponsable implements AccesoDatosResponsableInterface {
       consultaParametrizada.setString(2, responsable.getNombres());
       consultaParametrizada.setString(3, responsable.getTelefono());
       consultaParametrizada.setString(4, responsable.getCorreoinstitucional());
-      consultaParametrizada.setInt(5, responsable.getEstado());
-      consultaParametrizada.setString(6, responsable.getNumeroPersonal());
+      consultaParametrizada.setString(5, responsable.getNumeroPersonal());
       consultaParametrizada.executeUpdate();
     } catch (SQLException exception) {
       exception.printStackTrace();
